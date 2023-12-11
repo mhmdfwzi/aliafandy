@@ -63,12 +63,12 @@
     <div class="page-title">
         <div class="row">
             <div class="col-sm-6">
-                <h4 class="mb-0"> {{ trans('orders_trans.Not_Completed_Orders') }}</h4>
+                <h4 class="mb-0"> {{ trans('orders_trans.Orders') }}</h4>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb pt-0 pr-0 float-left float-sm-right ">
                     <li class="breadcrumb-item"><a href="#"
-                            class="default-color">{{ trans('orders_trans.Not_Completed_Orders') }}</a></li>
+                            class="default-color">{{ trans('orders_trans.All_Orders') }}</a></li>
                     <li class="breadcrumb-item active">{{ trans('orders_trans.Orders') }}</li>
                 </ol>
             </div>
@@ -85,6 +85,8 @@
             <div class="card card-statistics h-100">
                 <div class="card-body">
 
+
+
                     <table id="custom_table_1" class="custom_table_1">
                         <thead>
                             <tr>
@@ -96,7 +98,6 @@
                                 <th>{{ trans('orders_trans.Status') }}</th>
                                 <th>{{ trans('orders_trans.Order_Number') }}</th>
                                 <th>{{ trans('orders_trans.Total') }}</th>
-                                <th>{{ trans('orders_trans.Delivery_Status') }}</th>
                                 <th>{{ trans('orders_trans.Control') }}</th>
                             </tr>
                         </thead>
@@ -167,33 +168,27 @@
                                         {{ Currency::format($totalPrice) }}
                                     </td>
 
-
-                                    <td rowspan="{{ $ordersGroup->count() }}">
-                                        @if ($ordersGroup[0]->status != 'completed')
-                                            <a href="{{ Route('delivery.orders.changeOrdersStatus', [$ordersGroup[0]->cart_id, 'completed']) }}"
-                                                class="btn btn-warning btn-sm">
-                                                تم التوصيل
-                                            </a>
-                                        @else
-                                            تم توصيل الطلبات بنجاح
-                                        @endif
-
-                                    </td>
-
-
-
-
+                                    @php
+                                        $order_delivery = App\Models\OrderDelivery::where('order_id', $ordersGroup[0]->id)->first();
+                                        $delivery = $order_delivery ? App\Models\Delivery::where('id', $order_delivery->delivery_id)->first() : null;
+                                    @endphp
                                     <td>
-                                        <button data-toggle="modal" data-target="#showOrderModal{{ $ordersGroup[0]->id }}"
-                                            class="btn btn-primary btn-sm">
-                                            <i class="fa fa-eye"></i>
-                                        </button>
-
-                                        @include('backend.Delivery_Dashboard.orders.show_modal', [
-                                            'order' => $ordersGroup[0],
-                                            'modalId' => 'showOrderModal' . $ordersGroup[0]->id,
-                                        ])
+                                        @can('assignDelivery', App\Models\Delivery::class)
+                                            @if ($order_delivery)
+                                                <div>{{ $delivery->name }} تم أرسال الطلب لمندوب الشحن</div>
+                                            @else
+                                                <button type="button" class="button x-small" data-toggle="modal"
+                                                    data-target="#assign_delivery"
+                                                    data-cart-id="{{ $ordersGroup[0]->cart_id }}"
+                                                    data-order-id="{{ $ordersGroup[0]->id }}">
+                                                    {{ trans('orders_trans.Assign_Delivery') }}
+                                                </button>
+                                            @endif
+                                        @endcan
                                     </td>
+
+
+
                                 </tr>
 
 
@@ -252,20 +247,21 @@
                                             {{ Currency::format($totalPrice) }}
                                         </td>
 
-
                                         <td>
-                                            <button data-toggle="modal"
-                                                data-target="#showOrderModal{{ $additionalOrder->id }}"
-                                                class="btn btn-primary btn-sm">
-                                                <i class="fa fa-eye"></i>
-                                            </button>
-
-                                            @include('backend.Delivery_Dashboard.orders.show_modal', [
-                                                'order' => $additionalOrder,
-                                                'modalId' => 'showOrderModal' . $additionalOrder->id,
-                                            ])
-
+                                            @can('assignDelivery', App\Models\Delivery::class)
+                                                {{-- @if ($order_delivery)
+                                                  <div>{{ $delivery->name }} تم أرسال الطلب لمندوب الشحن</div>
+                                              @else --}}
+                                                <button type="button" class="button x-small" data-toggle="modal"
+                                                    data-target="#assign_delivery"
+                                                    data-cart-id="{{ $additionalOrder->cart_id }}"
+                                                    data-order-id="{{ $additionalOrder->id }}">
+                                                    {{ trans('orders_trans.Assign_Delivery') }}
+                                                </button>
+                                                {{-- @endif --}}
+                                            @endcan
                                         </td>
+
                                     </tr>
                                 @endforeach
                             @endforeach
@@ -302,30 +298,9 @@
                                     <!-- First order's details -->
                                     <td>{{ $ordersGroup[0]->id }}</td>
 
-                                    <td rowspan="{{ $ordersGroup->count() }}">
-                                        @if ($ordersGroup[0]->status != 'completed')
-                                            <a href="{{ Route('delivery.orders.changeOrdersStatus', [$ordersGroup[0]->cart_id, 'completed']) }}"
-                                                class="btn btn-warning btn-sm">
-                                                تم التوصيل
-                                            </a>
-                                        @else
-                                            تم توصيل الطلبات بنجاح
-                                        @endif
 
-                                    </td>
 
-                                    <td>
-                                        <button data-toggle="modal" data-target="#showOrderModal1{{ $ordersGroup[0]->id }}"
-                                            class="btn btn-primary btn-sm">
-                                            <i class="fa fa-eye"></i>
-                                        </button>
 
-                                        @include('backend.Delivery_Dashboard.orders.mobile_modal', [
-                                            'order' => $ordersGroup[0],
-                                            'modalId' => 'showOrderModal1' . $ordersGroup[0]->id,
-                                        ])
-
-                                    </td>
                                 </tr>
 
 
@@ -335,18 +310,7 @@
                                         <!-- Only display order details (except cart ID) for additional rows -->
                                         <td>{{ $additionalOrder->id }}</td>
 
-                                        <td>
-                                            <button data-toggle="modal"
-                                                data-target="#showOrderModal1{{ $additionalOrder->id }}"
-                                                class="btn btn-primary btn-sm">
-                                                <i class="fa fa-eye"></i>
-                                            </button>
 
-                                            @include('backend.Delivery_Dashboard.orders.mobile_modal', [
-                                                'order' => $additionalOrder,
-                                                'modalId' => 'showOrderModal1' . $additionalOrder->id,
-                                            ])
-                                        </td>
                                     </tr>
                                 @endforeach
                             @endforeach
@@ -354,6 +318,74 @@
                         </tbody>
                     </table>
 
+
+                    <!-- Assign Delivery modal -->
+                    <div class="modal fade" id="assign_delivery" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 style="font-family: 'Cairo', sans-serif;" class="modal-title"
+                                        id="exampleModalLabel">
+                                        {{ trans('orders_trans.Assign_Delivery') }}
+                                    </h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <!-- add_form -->
+                                    <form action="{{ Route('delivery.orders.assignDelivery') }}" method="POST">
+                                        @csrf
+
+
+                                        <div class="row">
+
+                                            <div class="col-md-12">
+                                                <input name="order_id" id="order_id" hidden />
+                                                <input name="cart_id" id="cart_id" hidden />
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label> {{ trans('orders_trans.Delivery_Name') }} <span
+                                                            class="text-danger">*</span></label>
+                                                    <select name="delivery_id" id="" class="custom-select mr-sm-2">
+                                                        <option value="">{{ trans('orders_trans.Choose_Delivery') }}
+                                                        </option>
+                                                        @foreach ($deliveries as $delivery)
+                                                            <option value="{{ $delivery->id }}">{{ $delivery->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    @error('delivery_id')
+                                                        <div class="alert alert-danger">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">{{ trans('orders_trans.Close') }}</button>
+                                            <button type="submit"
+                                                class="btn btn-success">{{ trans('orders_trans.Submit') }}</button>
+                                        </div>
+
+                                    </form>
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -362,6 +394,19 @@
 @endsection
 @push('scripts')
     <script>
+        $('#assign_delivery').on('show.bs.modal', function(event) {
+
+            var button = $(event.relatedTarget); // Button that triggered the modal
+
+            var orderId = button.data(
+                'order-id'); // Extract the order ID from the button data attribute
+            $('#order_id').val(orderId); // Set the value of the hidden input field with the order ID
+
+            var cartId = button.data(
+                'cart-id'); // Extract the order ID from the button data attribute
+            $('#cart_id').val(cartId); // Set the value of the hidden input field with the order ID
+
+        });
         $(document).ready(function() {
             var datatable = $('#custom_table').DataTable({
                 stateSave: true,

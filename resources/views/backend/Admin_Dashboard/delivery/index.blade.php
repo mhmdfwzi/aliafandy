@@ -36,7 +36,7 @@
                             <th>{{ trans('delivery_trans.Id') }}</th>
                             <th>{{ trans('delivery_trans.Delivery_Name') }}</th>
                             <th>{{ trans('delivery_trans.Email') }}</th>
-                            <th>{{ trans('delivery_trans.Phone_Number') }}</th>ظ
+                            <th>{{ trans('delivery_trans.Phone_Number') }}</th>
                             <th>{{ trans('delivery_trans.Category_Name') }}</th>
                             <th>{{ trans('delivery_trans.Control') }}</th>
                         </tr>
@@ -101,4 +101,4 @@
         $('#table_id').DataTable();
     });
 </script>
-@endpu
+@endpush

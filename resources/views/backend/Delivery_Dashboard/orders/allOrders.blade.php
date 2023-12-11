@@ -184,15 +184,19 @@
 
 
                                     <td>
-                                        <button data-toggle="modal" data-target="#showOrderModal{{ $ordersGroup[0]->id }}"
-                                            class="btn btn-primary btn-sm">
-                                            <i class="fa fa-eye"></i>
-                                        </button>
+                                        @if (!$delivery_admin)
+                                            <button data-toggle="modal"
+                                                data-target="#showOrderModal{{ $ordersGroup[0]->id }}"
+                                                class="btn btn-primary btn-sm">
+                                                <i class="fa fa-eye"></i>
+                                            </button>
 
-                                        @include('backend.dashboards.delivery.orders.show_modal', [
-                                            'order' => $ordersGroup[0],
-                                            'modalId' => 'showOrderModal' . $ordersGroup[0]->id,
-                                        ])
+                                            @include('backend.Delivery_Dashboard.orders.show_modal', [
+                                                'order' => $ordersGroup[0],
+                                                'modalId' => 'showOrderModal' . $ordersGroup[0]->id,
+                                            ])
+                                        @endif
+
                                     </td>
                                 </tr>
 
@@ -260,7 +264,7 @@
                                                 <i class="fa fa-eye"></i>
                                             </button>
 
-                                            @include('backend.dashboards.delivery.orders.show_modal', [
+                                            @include('backend.Delivery_Dashboard.orders.show_modal', [
                                                 'order' => $additionalOrder,
                                                 'modalId' => 'showOrderModal' . $additionalOrder->id,
                                             ])
@@ -315,16 +319,18 @@
                                     </td>
 
                                     <td>
-                                        <button data-toggle="modal" data-target="#showOrderModal1{{ $ordersGroup[0]->id }}"
-                                            class="btn btn-primary btn-sm">
-                                            <i class="fa fa-eye"></i>
-                                        </button>
+                                        @if (!$delivery_admin)
+                                            <button data-toggle="modal"
+                                                data-target="#showOrderModal1{{ $ordersGroup[0]->id }}"
+                                                class="btn btn-primary btn-sm">
+                                                <i class="fa fa-eye"></i>
+                                            </button>
 
-                                        @include('backend.dashboards.delivery.orders.mobile_modal', [
-                                            'order' => $ordersGroup[0],
-                                            'modalId' => 'showOrderModal1' . $ordersGroup[0]->id,
-                                        ])
-
+                                            @include('backend.Delivery_Dashboard.orders.mobile_modal', [
+                                                'order' => $ordersGroup[0],
+                                                'modalId' => 'showOrderModal1' . $ordersGroup[0]->id,
+                                            ])
+                                        @endif
                                     </td>
                                 </tr>
 
@@ -342,7 +348,7 @@
                                                 <i class="fa fa-eye"></i>
                                             </button>
 
-                                            @include('backend.dashboards.delivery.orders.mobile_modal', [
+                                            @include('backend.Delivery_Dashboard.orders.mobile_modal', [
                                                 'order' => $additionalOrder,
                                                 'modalId' => 'showOrderModal1' . $additionalOrder->id,
                                             ])

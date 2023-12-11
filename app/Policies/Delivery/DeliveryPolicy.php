@@ -19,8 +19,8 @@ class DeliveryPolicy
     public function viewAny(Delivery $delivery)
     {
         //
-        
-        return $delivery->hasAbility('delivery.show');
+
+        return $delivery->hasAbility('delivery.viewAll');
     }
 
     /**
@@ -33,7 +33,7 @@ class DeliveryPolicy
     public function view(Delivery $delivery)
     {
         //
-        return $delivery->hasAbility('delivery.show');
+        return $delivery->hasAbility('delivery.view');
     }
 
     /**
@@ -95,7 +95,13 @@ class DeliveryPolicy
         //
     }
 
-    public function deliveryUser(Delivery $delivery){
+    public function deliveryUser(Delivery $delivery)
+    {
         return $delivery->hasAbility('delivery.deliveryUser');
+    }
+
+    public function assignDelivery(Delivery $delivery)
+    {
+        return $delivery->hasAbility('delivery.assign');
     }
 }

@@ -12,7 +12,8 @@ class ReportsController extends Controller
 {
     //
     // get reports of auth delivery
-    public function deliveryReport(){
+    public function deliveryReport()
+    {
         $deliveryUserId = Auth::user('delivery')->id;
         $deliveryOrders = OrderDelivery::where('delivery_id', $deliveryUserId)->with('order')->get();
 
@@ -20,12 +21,12 @@ class ReportsController extends Controller
         $orderIds = $deliveryOrders->pluck('order_id');
 
         // Query orders based on the extracted order_ids
-        $query = Order::whereIn('id', $orderIds)->where('status','<>','completed')->with('user', 'store');
+        $query = Order::whereIn('id', $orderIds)->where('status', 'completed')->with('user', 'store');
 
-          // Get the final result
-        $orders = $query->get();
+        // Get the final result
+        $orders = $query->paginate(10);
 
-        return view('backend.Delivery_Dashboard.reports.delivery_reports', compact('orders','deliveryOrders'));
+        return view('backend.Delivery_Dashboard.reports.delivery_reports', compact('orders', 'deliveryOrders'));
 
     }
 }

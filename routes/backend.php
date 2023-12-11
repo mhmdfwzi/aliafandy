@@ -38,8 +38,8 @@ use  App\Http\Controllers\Backend\Vendor\{
     NotificationsController as VendorNotificationsController ,
     OrderController as VendorOrderController,
     CouponController as VendorCouponController
-    
-    
+
+
 };
 
 use  App\Http\Controllers\Backend\Delivery\{
@@ -66,27 +66,27 @@ Route::group(
   ],
     function () {
 
-      
-    
-      Route::get('/notifications_config', [ConfigNotificationsController::class, 'index'])->name('config.notifications');
-      Route::post('/updatePusherSettings', [ConfigNotificationsController::class, 'updatePusherSettings'])
-      ->name('config.updatePusherSettings');
-      
-      Route::get('/sms_config', [ConfigSMSController::class, 'index'])->name('config.sms');
-      Route::post('/updateUltraMessageSettings', [ConfigSMSController::class, 'updateUltraMessageSettings'])
-      ->name('config.updateUltraMessageSettings');
 
 
-      
-      Route::get('/payment_config', [ConfigPaymentsController::class, 'paymentConfig'])->name('config.payment');
-      Route::post('/updatePaymobSettings', [ConfigPaymentsController::class, 'updatePaymobSettings'])
-      ->name('config.updatePaymobSettings');
+        Route::get('/notifications_config', [ConfigNotificationsController::class, 'index'])->name('config.notifications');
+        Route::post('/updatePusherSettings', [ConfigNotificationsController::class, 'updatePusherSettings'])
+        ->name('config.updatePusherSettings');
+
+        Route::get('/sms_config', [ConfigSMSController::class, 'index'])->name('config.sms');
+        Route::post('/updateUltraMessageSettings', [ConfigSMSController::class, 'updateUltraMessageSettings'])
+        ->name('config.updateUltraMessageSettings');
+
+
+
+        Route::get('/payment_config', [ConfigPaymentsController::class, 'paymentConfig'])->name('config.payment');
+        Route::post('/updatePaymobSettings', [ConfigPaymentsController::class, 'updatePaymobSettings'])
+        ->name('config.updatePaymobSettings');
 
 
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-        Route::get('/charts',function(){
-          return view('backend.Admin_Dashboard.dashboard.charts');
+        Route::get('/charts', function () {
+            return view('backend.Admin_Dashboard.dashboard.charts');
         });
 
         Route::resource('/categories', CategoriesController::class);
@@ -102,8 +102,8 @@ Route::group(
         Route::put('/updateStoreFeatured/{store_id}', [StoresController::class, 'updateStoreFeatured'])->name('stores.updateStoreFeatured');
         Route::put('/updateStoreStatus/{store_id}', [StoresController::class, 'updateStoreStatus'])->name('stores.updateStoreStatus');
 
-        
-        
+
+
         Route::resource('/destinations', DestinationController::class);
 
         Route::resource('/vendors', VendorController::class);
@@ -129,7 +129,7 @@ Route::group(
 
         Route::get('/changeStatus/{order}/{status}', [OrderController::class,'changeStatus'])->name('orders.changeStatus');
 
-        Route::post('/order/assign_delivery', [OrderController::class,'assignDelivery'])->name('orders.assignDelivery');
+        // Route::post('/order/assign_delivery', [OrderController::class,'assignDelivery'])->name('orders.assignDelivery');
 
         Route::resource('/websiteParts', WebsitePartsController::class);
 
@@ -143,13 +143,13 @@ Route::group(
 
         Route::get('/orders_report/{status?}', [ReportsController::class,'index'])->name('reports.orders');
 
-        Route::get('paymentGateways',[PaymentGatewayController::class,'index'])->name('paymentGateways.index');
-        Route::get('paymentGateways/create',[PaymentGatewayController::class,'create'])->name('paymentGateways.create');
-        Route::post('paymentGateways/store',[PaymentGatewayController::class,'store'])->name('paymentGateways.store');
+        Route::get('paymentGateways', [PaymentGatewayController::class,'index'])->name('paymentGateways.index');
+        Route::get('paymentGateways/create', [PaymentGatewayController::class,'create'])->name('paymentGateways.create');
+        Route::post('paymentGateways/store', [PaymentGatewayController::class,'store'])->name('paymentGateways.store');
 
-        Route::get('paymentGateways/edit/{id}',[PaymentGatewayController::class,'edit'])->name('paymentGateways.edit');
-        Route::put('paymentGateways/update/{id}',[PaymentGatewayController::class,'update'])->name('paymentGateways.update');
-        Route::delete('paymentGateways/delete/{id}',[PaymentGatewayController::class,'delete'])->name('paymentGateways.destroy');
+        Route::get('paymentGateways/edit/{id}', [PaymentGatewayController::class,'edit'])->name('paymentGateways.edit');
+        Route::put('paymentGateways/update/{id}', [PaymentGatewayController::class,'update'])->name('paymentGateways.update');
+        Route::delete('paymentGateways/delete/{id}', [PaymentGatewayController::class,'delete'])->name('paymentGateways.destroy');
 
     }
 );
@@ -175,13 +175,13 @@ Route::group([
       Route::resource('/products', VendorProductsController::class);
 
       Route::get('/edit_products_price', [VendorProductsController::class,'edit_products_price'])->name('products.edit_products_price');
-       
+
       Route::put('/update_products_price', [VendorProductsController::class,'updateProductsPrice'])->name('products.update_products_price');
 
       // Route::get('/add_variant/{product_id}', [VendorProductsController::class, 'add_variant'])->name('products.add_variant');
 
       // Route::resource('/product_variants', VendorProductVariantsController::class);
-      
+
       Route::get('/product_variant', [VendorProductVariantsController::class, 'index'])->name('product_variants.index');
       Route::get('/create_product_variant/{product_id}', [VendorProductVariantsController::class, 'create'])->name('product_variants.create');
       Route::post('/store_product_variant', [VendorProductVariantsController::class, 'store'])->name('product_variants.store');
@@ -202,7 +202,7 @@ Route::group([
 
       Route::resource('/attribute_values', VendorAttributeValuesController::class);
 
-      Route::resource('/coupons',VendorCouponController::class);
+      Route::resource('/coupons', VendorCouponController::class);
 
       Route::resource('/orders', VendorOrderController::class);
 
@@ -227,18 +227,23 @@ Route::group([
 
   ], function () {
 
-   
+
       Route::get('/dashboard', [DeliveryDashboardController::class, 'index'])->name('dashboard');
-        
+
       Route::resource('/orders', DeliveryOrdersController::class);
 
       // not completed orders
-      Route::get('/notCompletedOrders',[DeliveryOrdersController::class,'notCompletedOrders'])->name('orders.notCompletedOrders');
+      Route::get('/notCompletedOrders', [DeliveryOrdersController::class,'notCompletedOrders'])->name('orders.notCompletedOrders');
+
+      Route::get('/adminOrders', [DeliveryOrdersController::class,'adminOrders'])->name('orders.adminOrders');
+
+
+      Route::post('/delivery_admin/assign_delivery', [DeliveryOrdersController::class,'assignDelivery'])->name('orders.assignDelivery');
 
       Route::get('/changeStatus/{order_id}/{status}', [DeliveryOrdersController::class,'changeStatus'])->name('orders.changeStatus');
       Route::get('/changeOrdersStatus/{cart_id}/{status}', [DeliveryOrdersController::class,'changeOrdersStatusToComplete'])->name('orders.changeOrdersStatus');
 
-      
+
       Route::get('/orders_report/{status?}', [DeliveryOrdersController::class,'orderReports'])->name('orders.reports');
 
       Route::get('/delivered_reports', [DeliveryOrdersController::class,'deliveredOrdersReport'])->name('deliveredOrders.reports');

@@ -32,11 +32,12 @@
         <div class="card card-statistics h-100">
             <div class="card-body">
 
-                <table id="product-variants-table" class="display" >
+                <table id="product-variants-table" class="display">
                     <thead>
                         <tr>
-                            <th>{{ trans('product_variant_trans.Id') }}</th>  
+                            <th>{{ trans('product_variant_trans.Id') }}</th>
                             <th>الخاصية</th>
+                            <th>الصورة</th>
                             <th>القيمة</th>
                             <th>التحكم</th>
                         </tr>
@@ -49,9 +50,9 @@
                                 <td>
                                     <img src="{{ $product_variant->image_url }}" height="50" width="50"
                                         alt="">
-                                </td> 
+                                </td>
                                 <td>{{ $product_variant->attribute->name }}</td>
-                                <td>{{ $product_variant->attribute_value->value }}</td> 
+                                <td>{{ $product_variant->attribute_value->value }}</td>
 
                                 <td>
                                     <a href="" class="btn btn-primary btn-sm">
@@ -138,11 +139,11 @@
 
                 <br>
 
-                <form method="post" enctype="multipart/form-data" action="{{ Route('vendor.product_variants.store') }}"
-                    id="product_variant_form" autocomplete="off">
+                <form method="post" enctype="multipart/form-data"
+                    action="{{ Route('vendor.product_variants.store') }}" id="product_variant_form" autocomplete="off">
 
                     @csrf
-@method('post')
+                    @method('post')
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -152,9 +153,9 @@
                             </div>
                         </div>
                     </div>
- 
 
- 
+
+
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
@@ -195,7 +196,6 @@
 
 @endsection
 @push('scripts')
-
 <script>
     // function to preview image
     function preview() {
@@ -250,7 +250,7 @@
                     success: function(response) {
                         var $form = $(
                             '#product_variant_form'
-                            ); // Convert the HTML code into a jQuery object
+                        ); // Convert the HTML code into a jQuery object
 
                         // Create and append the two input elements to the form
                         var input1 = '<input type="hidden" name="attribute_id" value="' +
@@ -289,7 +289,7 @@
                 success: function(response) {
                     console.log(response);
                     var newRow = '<tr style="text-align:center">' +
-                        '<td>' + response.id + '</td>' +   
+                        '<td>' + response.id + '</td>' +
                         '<td>' + response.attribute_name + '</td>' +
                         '<td>' + response.attribute_value_name + '</td>' +
                         '<td>' +
@@ -307,7 +307,7 @@
                     // Assuming the response is the HTML code for a new table row
                     // You can modify this based on your actual response format
                     $('#product-variants-table').append(
-                    newRow); // Append the new row to the table body
+                        newRow); // Append the new row to the table body
                     form[0].reset(); // Reset the form inputs
                     $('#frame').attr('src',
                         "{{ asset('backend/assets/images/profile-avatar.jpg') }}");

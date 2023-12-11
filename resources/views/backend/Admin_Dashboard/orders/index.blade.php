@@ -41,7 +41,7 @@
                 @endphp
 
                 @foreach ($groupedOrders as $cartId => $ordersGroup)
-                    <table border='1' width='100%' style="direction:rtl">
+                    <table  width='100%' style="direction:rtl">
                         <tr>
                             <td>كود</td>
                             <td>{{ $cartId }}</td>
@@ -118,7 +118,7 @@
                                     $delivery = $order_delivery ? App\Models\Delivery::where('id', $order_delivery->delivery_id)->first() : null;
                                 @endphp
 
-                                @can('assignDelivery', App\Models\Admin::class)
+                                {{-- @can('assignDelivery', App\Models\Admin::class)
                                     @if ($order_delivery)
                                         <div>{{ $delivery->name }} تم أرسال الطلب لمندوب الشحن</div>
                                     @else
@@ -128,7 +128,7 @@
                                             {{ trans('orders_trans.Assign_Delivery') }}
                                         </button>
                                     @endif
-                                @endcan
+                                @endcan --}}
                             </td>
                         </tr>
                         <tr>
@@ -235,7 +235,7 @@
 
 
                 <!-- Assign Delivery modal -->
-                <div class="modal fade" id="assign_delivery" tabindex="-1" role="dialog"
+                {{-- <div class="modal fade" id="assign_delivery" tabindex="-1" role="dialog"
                     aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
@@ -300,7 +300,7 @@
 
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
 
             </div>
@@ -313,20 +313,20 @@
 <script>
     $(document).ready(function() {
 
-        $('#assign_delivery').on('show.bs.modal', function(event) {
-            console.log("Modal shown");
-            var button = $(event.relatedTarget);
-            console.log("Button: ", button);
+        // $('#assign_delivery').on('show.bs.modal', function(event) {
+        //     console.log("Modal shown");
+        //     var button = $(event.relatedTarget);
+        //     console.log("Button: ", button);
 
-            var orderId = button.data('order-id');
-            console.log("Order ID: ", orderId);
+        //     var orderId = button.data('order-id');
+        //     console.log("Order ID: ", orderId);
 
-            var cartId = button.data('cart-id');
-            console.log("Cart ID: ", cartId);
+        //     var cartId = button.data('cart-id');
+        //     console.log("Cart ID: ", cartId);
 
-            $('#order_id').val(orderId);
-            $('#cart_id').val(cartId);
-        });
+        //     $('#order_id').val(orderId);
+        //     $('#cart_id').val(cartId);
+        // });
 
         var datatable = $('#custom_table').DataTable({
             stateSave: true,

@@ -1,13 +1,13 @@
 <?php
 
 return [
-          'delivery.viewAll' => 'View Delivery',
-          'delivery.view' => 'View Delivery',
+          'delivery.view' => 'Delivery View Delivery',
+          'delivery.viewAll' => 'Admin View Delivery',
           'delivery.create' => 'Create Delivery',
           'delivery.update' => 'Update Delivery',
           'delivery.delete' => 'Delete Delivery',
           'delivery.assign' => 'Assign Delivery',
-          
+
           // 'websiteParts.view' => 'View Website Parts',
           // 'websiteParts.create' => 'Create Website Parts',
           // 'websiteParts.update' => 'Update Website Parts',
@@ -134,6 +134,6 @@ return [
           'roles.restore' => 'Restore Roles',
           'roles.force-delete' => 'Force Delete Role',
 
-         
-          
+
+
 ];

@@ -64,7 +64,7 @@
     <div class="page-title">
         <div class="row">
             <div class="col-sm-6">
-                <h4 class="mb-0"> {{ trans('orders_trans.Orders_Reports') }}</h4>
+                <h4 class="mb-0"> تقارير الدليفرى للطلبات</h4>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb pt-0 pr-0 float-left float-sm-right ">
@@ -104,11 +104,21 @@
                         <tbody>
                             @php
                                 $groupedOrders = $orders->groupBy('cart_id');
+                                $totalShipping = 0;
+                                $totalOrders = 0;
+                                $totalPercent = 0;
                             @endphp
-                            {{-- @foreach ($orders as $order) --}}
                             @foreach ($groupedOrders as $cartId => $ordersGroup)
+                                @php
+                                    $totalShipping += $ordersGroup[0]->shipping;
+                                    $totalOrders += $ordersGroup->count();
+                                    $totalPercent += $ordersGroup[0]->percent;
+                                @endphp
                                 <tr>
-                                    <td rowspan="{{ $ordersGroup->count() }}">{{ $cartId }}</td>
+                                    <td rowspan="{{ $ordersGroup->count() }}">
+                                        {{-- {{ $cartId }} --}}
+                                        {{ $loop->iteration }}
+                                    </td>
 
                                     <td>{{ $ordersGroup[0]->id }}</td>
 
@@ -123,7 +133,8 @@
                                         {{ $ordersGroup[0]->orderDelivery->order_location }}</td>
 
 
-                                    <td rowspan="{{ $ordersGroup->count() }}">{{ $ordersGroup[0]->shipping }}</td>
+                                    <td rowspan="{{ $ordersGroup->count() }}">
+                                        {{ Currency::format($ordersGroup[0]->shipping) }}</td>
                                     {{-- <td>{{ $deliveryOrder->order->number }}</td> --}}
 
                                     <td>
@@ -186,27 +197,40 @@
                             @endforeach
                             <tr>
                                 <td>أجمالى الشحن</td>
-                                <td colspan="7"></td>
+                                <td colspan="7">
+                                    {{ Currency::format($totalShipping) }}
+                                </td>
                             </tr>
 
                             <tr>
                                 <td>عدد الطلبات</td>
-                                <td colspan="7"></td>
+                                <td colspan="7">
+                                    {{ $totalOrders }}
+                                </td>
                             </tr>
 
                             <tr>
                                 <td>النسية</td>
-                                <td colspan="7"></td>
+                                <td colspan="7">
+                                    {{ $totalPercent }}
+                                </td>
                             </tr>
                         </tbody>
                     </table>
 
 
-
+                    {{ $orders->links() }}
 
                 </div>
             </div>
         </div>
+
+    </div>
+
+    <div>
+
+
+
     </div>
     <!-- row closed -->
 @endsection

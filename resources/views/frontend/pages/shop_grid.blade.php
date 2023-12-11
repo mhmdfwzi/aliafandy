@@ -39,17 +39,16 @@
 
 
             <div class="row">
-                
+
                 <div class="col-lg-3 col-12">
 
                     <div class="product-sidebar">
- 
+
 
                         <!-- Start Product search -->
-                        <div class="single-widget search"> 
+                        <div class="single-widget search">
                             <form action="#">
-                                <input type="text" name="search"id="search"
-                                    placeholder=" ابحث عن منتج">
+                                <input type="text" name="search"id="search" placeholder=" ابحث عن منتج">
                                 {{-- <button type="submit"><i class="lni lni-search-alt"></i></button> --}}
                             </form>
                         </div>
@@ -60,48 +59,52 @@
                         <div class="single-widget">
 
 
-                          
- 
-@if(isset($categories))
-                            <div class="checkout-steps-form-style-1">
-                                <ul id="accordionExample">
 
-                                    @foreach ($categories as $category)
-                                    @if ($category->parent_id === null)
-                                <li>
-                                        <h6 class="title collapsed" data-bs-toggle="collapse" data-bs-target="#x{{$category->id}}" aria-expanded="false" aria-controls="x{{$category->id}}">
-                                            {{ $category->name }}
-                                        </h6>
-                                        <section class="checkout-steps-form-content collapse" id="x{{$category->id}}" aria-labelledby="x{{$category->id}}" data-bs-parent="#accordionExample">
-                                            <div class="row">
-                            
-                                                @if ($category->children->count() > 0)
-                                                <ul class="list" style="margin-left: 10px;">
-                                                    @foreach ($category->children as $child)
-                                                        <li class="m-0">
-                                                            <input type="checkbox" value="{{ $child->id }}"
-                                                                name="category[]" class="category"
-                                                                @checked($category_id == $child->id)>
-                                                            <label  >{{ $child->name }}
-                                                                ({{ $child->products()->count() }})
-                                                            </label>
-                                                        </li>
-                                                    @endforeach
-                                                </ul>
+
+                            @if (isset($categories))
+                                <div class="checkout-steps-form-style-1">
+                                    <ul id="accordionExample">
+
+                                        @foreach ($categories as $category)
+                                            @if ($category->parent_id === null)
+                                                <li>
+                                                    <h6 class="title collapsed" data-bs-toggle="collapse"
+                                                        data-bs-target="#x{{ $category->id }}" aria-expanded="false"
+                                                        aria-controls="x{{ $category->id }}">
+                                                        {{ $category->name }}
+                                                    </h6>
+                                                    <section class="checkout-steps-form-content collapse"
+                                                        id="x{{ $category->id }}" aria-labelledby="x{{ $category->id }}"
+                                                        data-bs-parent="#accordionExample">
+                                                        <div class="row">
+
+                                                            @if ($category->children->count() > 0)
+                                                                <ul class="list" style="margin-left: 10px;">
+                                                                    @foreach ($category->children as $child)
+                                                                        <li class="m-0">
+                                                                            <input type="checkbox"
+                                                                                value="{{ $child->id }}"
+                                                                                name="category[]" class="category"
+                                                                                @checked($category_id == $child->id)>
+                                                                            <label>{{ $child->name }}
+                                                                                ({{ $child->products()->count() }})
+                                                                            </label>
+                                                                        </li>
+                                                                    @endforeach
+                                                                </ul>
+                                                            @endif
+
+                                                        </div>
+                                                    </section>
+                                                </li>
                                             @endif
-                            
-                                            </div>
-                                        </section>
-                                    </li>
- 
-                                    @endif
-                                    @endforeach
+                                        @endforeach
 
-                            
-                                </ul>
-                            </div>
 
-              @endif
+                                    </ul>
+                                </div>
+
+                            @endif
                         </div>
 
                         <!-- End Categories Filter -->
@@ -176,7 +179,7 @@
 
                     </div>
 
-                 </div>
+                </div>
                 <!-- End Product Sidebar -->
 
 
@@ -187,15 +190,15 @@
                             <div class="row align-items-center">
 
                                 <div class="col-lg-7 col-md-8 col-12">
-                                    <div class="product-sorting dropdown"> 
+                                    <div class="product-sorting dropdown">
                                         <select class="form-control" name="sort" id="sort">
                                             <option value="default">رتب المنتجات</option>
                                             <option value="Low Price">اقل سعر</option>
                                             <option value="High Price">اعلى سعر</option>
                                             <option value="A - Z Order">ترتيب ابجدى</option>
                                         </select>
-                                         
-                                    </div> 
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -203,79 +206,92 @@
                         <div class="tab-content" id="nav-tabContent">
                             <div class="tab-pane fade show active" id="nav-grid"
                                 role="tabpanel"aria-labelledby="nav-grid-tab">
-                                <div class="show_filtered_products">
-                                    {{-- @include('frontend.pages.show_products') --}}
+
+                                @if ($products->count() > 0)
+                                    <div class="show_filtered_products">
 
 
-                                    <div class="row show_products">
-                                        @forelse ($products as $product)
-                                            <div class="col-lg-4 col-md-6 col-12">
-                                                <!-- Start Single Product -->
-                                                <div class="single-product">
-                                                    @if ($product->sale_percent)
-                                                    <span class="sale-tag">- {{ $product->sale_percent }}%</span>
-                                                @endif
-                                                    <div class="product-image">
-                                                       
-                                                        <a href="{{ Route('products.show_product', $product->slug) }}">
-                                                        <img src="{{ $product->image_url }}" alt="#">
-                                                        </a>
-                                                         
-                                                    </div>
-                                                    <div class="product-info">
-                                                        <h4 class="title">
-                                                            <a href="{{ Route('products.show_product', $product->slug) }}">{{ $product->name }}</a>
-                                                        </h4>
-                                                        <span class="category">
-                                                            <a href="{{ Route('shop_grid.index', $product->category->id) }}">
-                                                             {{ $product->category->name }} </a>
-                                                            من :
-                                                            <a href="{{ Route('shop_grid.indexStore', $product->store->id) }}">
-                                                            {{ $product->store->name }} 
+                                        <div class="row show_products">
+                                            @foreach ($products as $product)
+                                                <div class="col-lg-4 col-md-6 col-12">
+                                                    <!-- Start Single Product -->
+                                                    <div class="single-product">
+                                                        @if ($product->sale_percent)
+                                                            <span class="sale-tag">-
+                                                                {{ $product->sale_percent }}%</span>
+                                                        @endif
+                                                        <div class="product-image">
+
+                                                            <a
+                                                                href="{{ Route('products.show_product', $product->slug) }}">
+                                                                <img src="{{ $product->image_url }}" alt="#">
                                                             </a>
-                                                        </span>
 
-                                                        
-                                                        <div class="price">
-                                                            <span>{{ Currency::format($product->price) }}</span>
-                                                            @if ($product->compare_price >$product->price)
-                                                                <span
-                                                                    class="discount-price">{{ Currency::format($product->compare_price) }}</span>
-                                                            @endif
+                                                        </div>
+                                                        <div class="product-info">
+                                                            <h4 class="title">
+                                                                <a
+                                                                    href="{{ Route('products.show_product', $product->slug) }}">{{ $product->name }}</a>
+                                                            </h4>
+                                                            <span class="category">
+                                                                <a
+                                                                    href="{{ Route('shop_grid.index', $product->category->id) }}">
+                                                                    {{ $product->category->name }} </a>
+                                                                من :
+                                                                <a
+                                                                    href="{{ Route('shop_grid.indexStore', $product->store->id) }}">
+                                                                    {{ $product->store->name }}
+                                                                </a>
+                                                            </span>
+
+
+                                                            <div class="price">
+                                                                <span>{{ Currency::format($product->price) }}</span>
+                                                                @if ($product->compare_price > $product->price)
+                                                                    <span
+                                                                        class="discount-price">{{ Currency::format($product->compare_price) }}</span>
+                                                                @endif
+                                                            </div>
                                                         </div>
                                                     </div>
+                                                    <!-- End Single Product -->
                                                 </div>
-                                                <!-- End Single Product -->
-                                            </div>
+                                            @endforeach
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <!-- Pagination -->
+                                                <div class="pagination center">
+                                                    <ul class="pagination-list">
+                                                        {{-- {{ $products->links() }} --}}
+                                                        <button id="seeMoreButton" class="btn btn-primary"
+                                                            data-page="1">شوف باقى المنتجات </button>
 
-                                        @empty
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div>
-                                                        There are no products
-                                                    </div>
+                                                    </ul>
                                                 </div>
+                                                <!--/ End Pagination -->
                                             </div>
-                                        @endforelse
+                                        </div>
+
                                     </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <!-- Pagination -->
-                                            <div class="pagination center">
-                                                <ul class="pagination-list">
-                                                    {{-- {{ $products->links() }} --}}
-                                                    <button id="seeMoreButton" class="btn btn-primary"
-                                                        data-page="1">شوف باقى المنتجات </button>
-
-                                                </ul>
+                                @else
+                                    <div class="row"
+                                        style="text-align: center;
+                                    margin-top: 20px; ">
+                                        <div class="col-md-12"
+                                            style=" background-color: #30bb47;
+                                        padding: 100px; ">
+                                            <div class="d-flex  justify-content-center ">
+                                                <p style="color: white; font-size:25px; font-weight:bold"> لا توجد
+                                                    منتجات</p>
                                             </div>
-                                            <!--/ End Pagination -->
                                         </div>
                                     </div>
-
-                                </div>
-
+                                @endif
                             </div>
+
+
+
                         </div>
 
 
@@ -388,35 +404,36 @@
                                     var productHtml =
                                         '<div class="col-lg-4 col-md-6 col-12">' +
                                         '<!-- Start Single Product -->' +
-                                        '<div class="single-product">';                                        
+                                        '<div class="single-product">';
                                     if (product.sale_percent) {
                                         productHtml += '<span class="sale-tag">- ' + product
                                             .sale_percent +
                                             ' %</span>';
                                     }
-                                    productHtml += 
-                                    '<div class="product-image">'+
-                                    '<img src="' + product.image_url + '" alt="#">'+
-                                    '</div>' +
-                                    '<div class="product-info">' +
-                                    '<h4 class="title">' +
-                                    '<a href="' + getProductRoute(product.slug) + '">' + product.name +
-                                    '</a>' +
-                                    '</h4>' +
-                                    '<span class="category">' +
-                                    '<a href="{{ route('shop_grid.index', ['categoryId' => $product->category->id]) }}">' +
-                                    (product.category ? product.category.name : '') +
-                                    '</a>' +
-                                    ' من:' + 
-                                    '<a href="{{ route('shop_grid.indexStore', ['storeId' => $product->store->id]) }}">' +
-                                    (product.store ? product.store.name : '') +
-                                    '</a>' +
-                                    '</span>' +
+                                    productHtml +=
+                                        '<div class="product-image">' +
+                                        '<img src="' + product.image_url + '" alt="#">' +
+                                        '</div>' +
+                                        '<div class="product-info">' +
+                                        '<h4 class="title">' +
+                                        '<a href="' + getProductRoute(product.slug) + '">' + product
+                                        .name +
+                                        '</a>' +
+                                        '</h4>' +
+                                        '<span class="category">' +
+                                        '<a href="{{ route('shop_grid.index', ['categoryId' => '']) }}">' +
+                                        (product.category ? product.category.name : '') +
+                                        '</a>' +
+                                        ' من:' +
+                                        '<a href="{{ route('shop_grid.indexStore', ['storeId' => '']) }}">' +
+                                        (product.store ? product.store.name : '') +
+                                        '</a>' +
+                                        '</span>' +
 
                                         '<div class="price">' +
                                         '<span>' + product.formatted_price + '</span>';
 
-                                    if (product.formatted_compare_price >product.formatted_price) {
+                                    if (product.formatted_compare_price > product.formatted_price) {
                                         productHtml += '<span class="discount-price">' + product
                                             .formatted_compare_price +
                                             '</span>';
@@ -489,19 +506,19 @@
                             for (var i = 0; i < product_length; i++) {
                                 var product = products[i];
                                 // Create HTML elements to display product information
-                                    // Create HTML elements to display product information
-                                    var productHtml =
-                                        '<div class="col-lg-4 col-md-6 col-12">' +
-                                        '<!-- Start Single Product -->' +
-                                        '<div class="single-product">';                                        
-                                    if (product.sale_percent) {
-                                        productHtml += '<span class="sale-tag">- ' + product
-                                            .sale_percent +
-                                            ' %</span>';
-                                    }
-                                    productHtml += 
-                                    '<div class="product-image">'+
-                                    '<img src="' + product.image_url + '" alt="#">'+
+                                // Create HTML elements to display product information
+                                var productHtml =
+                                    '<div class="col-lg-4 col-md-6 col-12">' +
+                                    '<!-- Start Single Product -->' +
+                                    '<div class="single-product">';
+                                if (product.sale_percent) {
+                                    productHtml += '<span class="sale-tag">- ' + product
+                                        .sale_percent +
+                                        ' %</span>';
+                                }
+                                productHtml +=
+                                    '<div class="product-image">' +
+                                    '<img src="' + product.image_url + '" alt="#">' +
                                     '</div>' +
                                     '<div class="product-info">' +
                                     '<h4 class="title">' +
@@ -509,16 +526,16 @@
                                     '</a>' +
                                     '</h4>' +
                                     '<span class="category">' +
-                                    '<a href="{{ route('shop_grid.index', ['categoryId' => $product->category->id]) }}">' +
+                                    '<a href="{{ route('shop_grid.index', ['categoryId' => '']) }}">' +
                                     (product.category ? product.category.name : '') +
                                     '</a>' +
-                                    ' من:' + 
-                                    '<a href="{{ route('shop_grid.indexStore', ['storeId' => $product->store->id]) }}">' +
+                                    ' من:' +
+                                    '<a href="{{ route('shop_grid.indexStore', ['storeId' => '']) }}">' +
                                     (product.store ? product.store.name : '') +
                                     '</a>' +
                                     '</span>' +
 
-                                     
+
                                     '<div class="price">' +
                                     '<span>' + product.formatted_price + '</span>';
 
@@ -591,24 +608,24 @@
                                     var productHtml =
                                         '<div class="col-lg-4 col-md-6 col-12">' +
                                         '<!-- Start Single Product -->' +
-                                        '<div class="single-product">';                                        
+                                        '<div class="single-product">';
                                     if (product.sale_percent) {
                                         productHtml += '<span class="sale-tag">- ' + product
                                             .sale_percent +
                                             ' %</span>';
                                     }
-                                    productHtml += 
-                                    '<div class="product-image">'+
-                                    '<img src="' + product.image_url + '" alt="#">'+
-                                    '</div>' +
+                                    productHtml +=
+                                        '<div class="product-image">' +
+                                        '<img src="' + product.image_url + '" alt="#">' +
+                                        '</div>' +
                                         '<div class="product-info">' +
                                         '<span class="category">{{ trans('front_home_trans.Category') }} :' +
-                                        '<a href="{{ route('shop_grid.index', ['categoryId' => $product->category->id]) }}">' +
+                                        '<a href="{{ route('shop_grid.index', ['categoryId' => '']) }}">' +
                                         (product.category ? product.category.name : '') +
                                         '</a>' +
                                         '</span>' +
                                         '<span class="category">{{ trans('front_home_trans.Store') }} :' +
-                                        '<a href="{{ route('shop_grid.indexStore', ['storeId' => $product->store->id]) }}">' +
+                                        '<a href="{{ route('shop_grid.indexStore', ['storeId' => '']) }}">' +
                                         (product.store ? product.store.name : '') +
                                         '</a>' +
                                         '</span>' +
@@ -616,7 +633,7 @@
                                         '<a href="' + getProductRoute(product.slug) + '">' + product.name +
                                         '</a>' +
                                         '</h4>' +
-                                        
+
                                         '<div class="price">' +
                                         '<span>' + product.formatted_price + '</span>';
 
