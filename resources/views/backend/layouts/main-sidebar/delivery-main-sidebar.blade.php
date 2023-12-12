@@ -76,15 +76,17 @@
                             <div class="clearfix"></div>
                         </a>
                         <ul id="reports-menu" class="collapse" data-parent="#sidebarnav">
+                            {{-- delivery --}}
                             @can('view', App\Models\Delivery::class)
                                 <li> <a
                                         href="{{ Route('delivery.reports.deliveryReport') }}">{{ trans('sidebar_trans.Delivery_Reports') }}</a>
                                 </li>
                             @endcan
 
+                            {{-- admin --}}
                             @can('viewAny', App\Models\Delivery::class)
                                 <li> <a
-                                        href="{{ Route('delivery.deliveredOrders.reports') }}">{{ trans('sidebar_trans.Admin_Delivery_Reports') }}</a>
+                                        href="{{ Route('delivery.reports.adminReport') }}">{{ trans('sidebar_trans.Admin_Delivery_Reports') }}</a>
                                 </li>
                             @endcan
                         </ul>

@@ -172,7 +172,7 @@
                                         $order_delivery = App\Models\OrderDelivery::where('order_id', $ordersGroup[0]->id)->first();
                                         $delivery = $order_delivery ? App\Models\Delivery::where('id', $order_delivery->delivery_id)->first() : null;
                                     @endphp
-                                    <td>
+                                    <td rowspan="{{ $ordersGroup->count() }}">
                                         @can('assignDelivery', App\Models\Delivery::class)
                                             @if ($order_delivery)
                                                 <div>{{ $delivery->name }} تم أرسال الطلب لمندوب الشحن</div>
@@ -247,20 +247,8 @@
                                             {{ Currency::format($totalPrice) }}
                                         </td>
 
-                                        <td>
-                                            @can('assignDelivery', App\Models\Delivery::class)
-                                                {{-- @if ($order_delivery)
-                                                  <div>{{ $delivery->name }} تم أرسال الطلب لمندوب الشحن</div>
-                                              @else --}}
-                                                <button type="button" class="button x-small" data-toggle="modal"
-                                                    data-target="#assign_delivery"
-                                                    data-cart-id="{{ $additionalOrder->cart_id }}"
-                                                    data-order-id="{{ $additionalOrder->id }}">
-                                                    {{ trans('orders_trans.Assign_Delivery') }}
-                                                </button>
-                                                {{-- @endif --}}
-                                            @endcan
-                                        </td>
+
+
 
                                     </tr>
                                 @endforeach

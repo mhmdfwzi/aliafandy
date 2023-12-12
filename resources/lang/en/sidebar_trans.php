@@ -101,21 +101,21 @@ return [
           'Completed_Orders' => 'الطلبات المكتملة',
           'Cancelled_Orders' => 'الطلبات الملغية',
           'Refunded_Orders' => 'الطلبات المستردة',
-          
+
           'Settings' => 'الأعدادات',
           'Website' => ' الموقع',
           'Website_Settings' => 'أعدادات الموقع',
           'Payment_Gateways' => ' بوابات الدفع',
           'All_Payment_Gateways' => 'كل بوابات الدفع',
 
-          
+
           'Add_Product_Properties' => 'أضافة خصائص المنتج',
           'All_Product_Properties' => 'كل خصائص المنتج',
           '' => '',
           '' => '',
           'Config' => 'Configurations',
           'Payment_Config' => 'أعدادات الدفع',
-          'Add_Payment_Gateways'=>' أضافة بوابة دفع' ,
+          'Add_Payment_Gateways' => ' أضافة بوابة دفع' ,
           'Notifications_Config' => 'أعدادات الأشعارات',
           'SMS_Config' => 'أعدادات الرسائل',
           '' => '',
@@ -125,7 +125,7 @@ return [
           '' => '',
           'Not_Completed_Orders' => 'الطلبات الغير مكتملة',
           '' => '',
-          '' => '',
+          'Admin_Orders' => 'كل الطلبات',
           '' => '',
           '' => '',
           '' => '',

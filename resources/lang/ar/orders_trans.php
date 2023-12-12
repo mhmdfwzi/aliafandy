@@ -40,6 +40,6 @@ return [
           'Cart_Number' => 'رقم العربة',
           'Variant' => 'Variant',
           'Change_Status' => 'Change Status',
-          '' => '',
+          'Delivery' => 'الدليفرى',
           '' => '',
 ];

@@ -19,4 +19,7 @@ class OrderDelivery extends Model
     public function order(){
         return $this->belongsTo(Order::class);
     }
+    public function delivery(){
+        return $this->belongsTo(Delivery::class);
+    }
 }

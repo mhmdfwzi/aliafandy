@@ -64,7 +64,8 @@
     <div class="page-title">
         <div class="row">
             <div class="col-sm-6">
-                <h4 class="mb-0"> تقارير الدليفرى للطلبات</h4>
+                <h4 class="mb-2"> تقارير الدليفرى للطلبات </h4>
+                <h4 class="mb-4"> تاريخ : {{ $today }}</h4>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb pt-0 pr-0 float-left float-sm-right ">
@@ -219,7 +220,16 @@
                     </table>
 
 
-                    {{ $orders->links() }}
+                    {{-- {{ $orders->links() }} --}}
+                    <div class="pagination-links d-flex justify-content-center">
+                        <a href="{{ route('delivery.reports.deliveryReport', ['date' => $prevDate]) }}"
+                            class="btn btn-primary m-2">اليوم السابق</a>
+
+                        <a href="{{ route('delivery.reports.deliveryReport', ['date' => $today]) }}"
+                            class="btn btn-primary m-2">اليوم </a>
+                        <a href="{{ route('delivery.reports.deliveryReport', ['date' => $nextDate]) }}"
+                            class="btn btn-primary m-2">اليوم التالى</a>
+                    </div>
 
                 </div>
             </div>

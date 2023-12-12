@@ -246,8 +246,12 @@ Route::group([
 
       Route::get('/orders_report/{status?}', [DeliveryOrdersController::class,'orderReports'])->name('orders.reports');
 
-      Route::get('/delivered_reports', [DeliveryOrdersController::class,'deliveredOrdersReport'])->name('deliveredOrders.reports');
 
-      Route::get('/delivery_reports', [DeliveryReportsController::class,'deliveryReport'])->name('reports.deliveryReport');
+      // reports
+      Route::get('/delivered_reports', [DeliveryReportsController::class,'deliveredOrdersReport'])->name('deliveredOrders.reports');
+
+      Route::get('/delivery_reports/{date?}', [DeliveryReportsController::class,'deliveryReport'])->name('reports.deliveryReport');
+
+      Route::get('/admin_reports/{date?}', [DeliveryReportsController::class,'adminReport'])->name('reports.adminReport');
 
   });

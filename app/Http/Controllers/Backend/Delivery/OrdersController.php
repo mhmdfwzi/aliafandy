@@ -18,7 +18,7 @@ class OrdersController extends Controller
         $delivery_admin = Delivery::where('id', Auth::user('delivery')->id)->whereHas('roles', function ($query) {
             $query->where('name', 'delivery admin');
         })->first();
-        $deliveries = Delivery::all();
+        $deliveries = Delivery::where('id', '<>', $delivery_admin->id)->get();
 
 
         $orders = Order::get();
@@ -72,7 +72,9 @@ class OrdersController extends Controller
     // function to get not Completed orders of the auth delivery tp control them
     public function notCompletedOrders()
     {
-        $order_delivery = OrderDelivery::where('delivery_id', Auth::user('delivery')->id)->pluck('order_id');
+        $order_delivery = OrderDelivery::where('delivery_id', Auth::user('delivery')->id)
+        // ->where('created_at', now()->today())
+        ->pluck('order_id');
         $orders = Order::whereIn('id', $order_delivery)->where('status', '<>', 'completed')->get();
         return view('backend.Delivery_Dashboard.orders.notCompletedOrders', compact('orders'));
     }
@@ -160,24 +162,7 @@ class OrdersController extends Controller
     }
 
 
-    // get orders that have been delivered with that user
-    public function deliveredOrdersReport()
-    {
-        $deliveryUserId = Auth::user('delivery')->id;
-        $deliveryOrders = OrderDelivery::where('delivery_id', $deliveryUserId)->with('order')->get();
-
-        // Extract order_ids from the OrderDelivery collection
-        $orderIds = $deliveryOrders->pluck('order_id');
-
-        // Query orders based on the extracted order_ids
-        $query = Order::whereIn('id', $orderIds)->where('status', 'completed')->with('user', 'store');
-
-        // Get the final result
-        $orders = $query->get();
-
-        return view('backend.Delivery_Dashboard.reports.delivered_orders', compact('orders', 'deliveryOrders'));
-
-    }
+   
 
 
 
