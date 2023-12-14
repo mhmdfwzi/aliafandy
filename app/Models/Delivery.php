@@ -18,11 +18,9 @@ class Delivery extends User
     protected $table = 'delivery';
 
     protected $fillable = [
-        'name',
-        'email',
+        'name', 
         'password',
-       'phone_number',
-       'category_id'
+       'phone_number' 
     ];
 
     public function category(){

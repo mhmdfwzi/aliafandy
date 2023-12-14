@@ -21,7 +21,7 @@ class OrdersController extends Controller
         $deliveries = Delivery::where('id', '<>', $delivery_admin->id)->get();
 
 
-        $orders = Order::get();
+        $orders = Order::where('status','<>','completed')->get();
 
 
         return view('backend.Delivery_Dashboard.orders.admin_orders', compact('orders', 'delivery_admin', 'deliveries'));

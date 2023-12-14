@@ -46,13 +46,7 @@
 
 
                     <div class="row">
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <x-backend.form.input label="{{ trans('delivery_trans.Email') }}" name="email"
-                                    type="email" class="form-control" />
-                            </div>
-                        </div>
+ 
 
                         <div class="col-md-6">
                             <div class="form-group">
@@ -69,23 +63,7 @@
                                 <x-backend.form.input label="{{ trans('delivery_trans.Phone_Number') }}"
                                     name="phone_number" type="phone" class="form-control" />
                             </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label> {{ trans('delivery_trans.Category_Name') }} <span
-                                        class="text-danger">*</span></label>
-                                <select name="category_id" id="" class="custom-select mr-sm-2">
-                                    <option value="">{{ trans('delivery_trans.Choose') }}</option>
-                                    @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('category_id')
-                                    <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
+                        </div> 
                     </div>
 
 

@@ -104,7 +104,7 @@
                                     </label>
                                     {{-- @foreach ($admin_roles as $admin_role) --}}
                                     <input type="checkbox" name="roles[]" id="" value="{{ $role->id }}"
-                                        @checked(in_array($role->id, $admin_roles) ? true : false)>
+                                        @checked(in_array($role->id, $delivery_roles) ? true : false)>
                                     {{-- @endforeach --}}
                                 @endforeach
 
