@@ -8,6 +8,8 @@ return [
           'delivery.delete' => 'Delete Delivery',
           'delivery.assign' => 'Assign Delivery',
 
+         
+
           // 'websiteParts.view' => 'View Website Parts',
           // 'websiteParts.create' => 'Create Website Parts',
           // 'websiteParts.update' => 'Update Website Parts',

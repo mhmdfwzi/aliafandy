@@ -16,10 +16,12 @@ class OrderDelivery extends Model
         'current_location',
         'order_location','order_delivery_time'    ];
 
-    public function order(){
+    public function order()
+    {
         return $this->belongsTo(Order::class);
     }
-    public function delivery(){
+    public function delivery()
+    {
         return $this->belongsTo(Delivery::class);
     }
 }

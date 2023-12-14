@@ -88,6 +88,10 @@
                                 <li> <a
                                         href="{{ Route('delivery.reports.adminReport') }}">{{ trans('sidebar_trans.Admin_Delivery_Reports') }}</a>
                                 </li>
+
+                                <li> <a
+                                        href="{{ Route('delivery.reports.adminFullReport') }}">{{ trans('sidebar_trans.Admin_Delivery_Full_Reports') }}</a>
+                                </li>
                             @endcan
                         </ul>
                     </li>

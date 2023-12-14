@@ -254,4 +254,6 @@ Route::group([
 
       Route::get('/admin_reports/{date?}', [DeliveryReportsController::class,'adminReport'])->name('reports.adminReport');
 
+      Route::get('/admin_full_reports/{date?}', [DeliveryReportsController::class,'adminFullReport'])->name('reports.adminFullReport');
+
   });

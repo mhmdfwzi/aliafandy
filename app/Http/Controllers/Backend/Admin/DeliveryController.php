@@ -23,12 +23,12 @@ class DeliveryController extends Controller
     {
         $roles = Role::all();
         $categories = Category::all();
-        return view('backend.Admin_Dashboard.delivery.create', compact('categories','roles'));
+        return view('backend.Admin_Dashboard.delivery.create', compact('categories', 'roles'));
     }
 
     public function store(Request $request)
     {
-        $data= $request->all();
+        $data = $request->all();
 
         $data['password'] = Hash::make($request->password);
         // dd($data);
@@ -44,9 +44,11 @@ class DeliveryController extends Controller
 
     public function edit($id)
     {
+        $roles = Role::all();
+
         $categories = Category::all();
         $delivery = Delivery::findOrFail($id);
-        return view('backend.Admin_Dashboard.delivery.edit', compact('delivery', 'categories'));
+        return view('backend.Admin_Dashboard.delivery.edit', compact('delivery', 'roles', 'categories'));
 
     }
     public function update(Request $request, $id)
@@ -54,8 +56,8 @@ class DeliveryController extends Controller
         $delivery = Delivery::findOrFail($id);
         $data = $request->all();
 
-          // Check if the 'roles' key exists in the request
-          if (isset($data['roles'])) {
+        // Check if the 'roles' key exists in the request
+        if (isset($data['roles'])) {
             // If 'roles' is not empty, sync the roles
             $delivery->roles()->sync($data['roles']);
         } else {

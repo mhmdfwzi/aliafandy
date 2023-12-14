@@ -118,14 +118,14 @@
                                 @endphp
                                 <tr>
                                     <td rowspan="{{ $ordersGroup->count() }}">
-                                        {{-- {{ $cartId }} --}}
                                         {{ $loop->iteration }}
                                     </td>
 
                                     <td>{{ $ordersGroup[0]->id }}</td>
 
                                     <td rowspan="{{ $ordersGroup->count() }}">
-                                        {{ $ordersGroup[0]->orderDelivery->order_delivery_time }}</td>
+                                        {{ \Carbon\Carbon::parse($ordersGroup[0]->orderDelivery->order_delivery_time)->format('h:i A') }}
+                                    </td>
 
                                     <td rowspan="{{ $ordersGroup->count() }}">
                                         {{ $ordersGroup[0]->user->first_name }}
@@ -137,7 +137,6 @@
 
                                     <td rowspan="{{ $ordersGroup->count() }}">
                                         {{ Currency::format($ordersGroup[0]->shipping) }}</td>
-                                    {{-- <td>{{ $deliveryOrder->order->number }}</td> --}}
 
                                     <td>
                                         @php
@@ -156,7 +155,8 @@
                                     <td rowspan="{{ $ordersGroup->count() }}">{{ $ordersGroup[0]->percent }}</td>
 
 
-                                    <td>{{ $ordersGroup[0]->orderDelivery->delivery->name }}</td>
+                                    <td rowspan="{{ $ordersGroup->count() }}">
+                                        {{ $ordersGroup[0]->orderDelivery->delivery->name }}</td>
                                 </tr>
 
                                 @foreach ($ordersGroup->skip(1) as $additionalOrder)
@@ -190,9 +190,6 @@
                                             {{ Currency::format($totalPrice) }}
                                         </td>
 
-                                        {{-- <td>{{ $additionalOrder->percent }}</td> --}}
-
-                                        <td>{{ $additionalOrder->orderDelivery->delivery->name }}</td>
 
                                     </tr>
                                 @endforeach

@@ -122,7 +122,7 @@ return [
           '' => '',
           'Delivery_Reports' => 'تقارير الدليفرى',
           'Admin_Delivery_Reports' => 'تقارير أدمن الدليفرى',
-          '' => '',
+          'Admin_Delivery_Full_Reports' => 'تقارير أدمن الدليفرى الكامل',
           'Not_Completed_Orders' => 'الطلبات الغير مكتملة',
           '' => '',
           'Admin_Orders' => 'كل الطلبات',
