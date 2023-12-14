@@ -88,7 +88,7 @@
                     <table id="custom_table_1" class="custom_table_1">
                         <thead>
                             <tr>
-                                <th>{{ trans('orders_trans.Cart_Number') }}</th>
+                                {{-- <th>{{ trans('orders_trans.Cart_Number') }}</th> --}}
                                 <th>{{ trans('orders_trans.Id') }}</th>
                                 <th>{{ trans('orders_trans.User_Name') }}</th>
                                 <th>{{ trans('orders_trans.Store_Name') }}</th>
@@ -110,7 +110,7 @@
                             @foreach ($groupedOrders as $cartId => $ordersGroup)
                                 <tr>
                                     <!-- Cart ID with rowspan -->
-                                    <td rowspan="{{ $ordersGroup->count() }}">{{ $cartId }}</td>
+                                    {{-- <td rowspan="{{ $ordersGroup->count() }}">{{ $cartId }}</td> --}}
 
                                     <!-- First order's details -->
                                     <td>{{ $ordersGroup[0]->id }}</td>

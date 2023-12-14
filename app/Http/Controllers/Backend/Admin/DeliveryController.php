@@ -44,9 +44,15 @@ class DeliveryController extends Controller
 
     public function edit($id)
     {
-        $categories = Category::all();
+        $roles = Role::all();
         $delivery = Delivery::findOrFail($id);
-        return view('backend.Admin_Dashboard.delivery.edit', compact('delivery', 'categories'));
+
+
+        $delivery_roles = $delivery->roles()->pluck('id')->toArray();
+
+
+        $categories = Category::all();
+        return view('backend.Admin_Dashboard.delivery.edit', compact('delivery', 'categories','roles','delivery_roles'));
 
     }
     public function update(Request $request, $id)
