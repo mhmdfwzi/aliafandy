@@ -16,9 +16,9 @@ class ShopGridController extends Controller
 
     public function index(Request $request, $category_id = null)
     {
-        $categories = Category::all();
+        $categories = Category::where('status','=','active')->get();
         $brands = Brand::all();
-        $stores = Store::all();
+        $stores = Store::where('status','=','active')->get();
 
         $products_category = $this->getFilteredProducts($request, $category_id);
 
@@ -35,9 +35,9 @@ class ShopGridController extends Controller
 
     public function indexStore(Request $request, $store_id = null)
     {
-        $categories = Category::all();
+        $categories = Category::where('status','=','active')->get();
         $brands = Brand::all();
-        $stores = Store::all();
+        $stores = Store::where('status','=','active')->get();
 
         $products_store = $this->getFilteredProductsStore($request, $store_id);
 

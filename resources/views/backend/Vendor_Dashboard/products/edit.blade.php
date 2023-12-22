@@ -290,18 +290,13 @@
 
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="status" value="draft"
-                                        @checked($product->status == 'draft')>
+                                    <input class="form-check-input" type="radio" name="status" value="inactive"
+                                        @checked($product->status == 'inactive')>
                                     <x-backend.form.label class="form-check-label"
-                                        label="{{ trans('products_trans.Draft') }}" />
+                                        label="inactive" />
 
                                 </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="status" value="archived"
-                                        @checked($product->status == 'archived')>
-                                    <x-backend.form.label class="form-check-label"
-                                        label="{{ trans('products_trans.Archived') }}" />
-                                </div>
+ 
                                 @error('status')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror

@@ -291,7 +291,7 @@
                     var newRow = '<tr style="text-align:center">' +
                         '<td>' + response.id + '</td>' +
                         '<td>' + response.attribute_name + '</td>' +
-                        '<td>' + response.attribute_value_name + '</td>' +
+                        '<td>' + response.attribute_value + '</td>' +
                         '<td>' +
                         '<a href="" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>' +
                         '<a href="' + response.edit_url +

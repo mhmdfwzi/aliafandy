@@ -250,17 +250,12 @@
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="status" value="draft" >
+                                    <input class="form-check-input" type="radio" name="status" value="inactive" >
                                     <label class="form-check-label">
-                                        {{ trans('products_trans.Draft') }}
+                                    inactive
                                     </label>
                                 </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="status" value="archived">
-                                    <label class="form-check-label">
-                                        {{ trans('products_trans.Archived') }}
-                                    </label>
-                                </div>
+ 
                                 @error('status')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror

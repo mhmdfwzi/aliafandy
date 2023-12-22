@@ -26,7 +26,8 @@ class ProductsController extends Controller
 
 
  
-        $products =  Product::where('category_id', '=', $product->category_id)->get();
+        $products =  Product::where('status','=','active')->where('category_id', '=', $product->category_id)->get();
+        $products_limit =  Product::where('category_id', '=', $product->category_id)->limit(20)->get();
         $reviews = Review::where('product_id', $product->id)->get();
 
         //$product_variants = ProductVariant::all();
@@ -54,8 +55,10 @@ class ProductsController extends Controller
         if($product->status != 'active'){
             abort(404);
         }
-        return view('frontend.pages.product_details',compact('product','reviews','main_categories',
-        'sup_categories','product_sizes','product_colors','product_pics','product_kamons','shose_sizes','products'));
+        return view('frontend.pages.product_details',compact
+        ('product','reviews','main_categories',
+        'sup_categories','product_sizes','product_colors',
+        'product_pics','product_kamons','shose_sizes','products','products_limit'));
     }
 
     public function productAutocomplete(Request $request){

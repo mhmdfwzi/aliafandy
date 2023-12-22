@@ -3089,15 +3089,15 @@ element.style {
 
 }
 .hero-area .hero-slider .single-slider .category-name{
-  padding-bottom: 15px;
-  margin-top: 20px;
+  padding-bottom: 5px;
+  margin-top: 3px;
  
 
 }
 
 .hero-area .hero-slider .single-slider .content .caty {
-  width: 130px;
-  height: 130px;
+  width: 120px;
+  height: 120px;
  text-align: center;
  padding: 0px;
 
@@ -3483,7 +3483,7 @@ element.style {
   box-shadow: 0px 0px 20px #00000012;
   padding: 8px;
   background: #fff;
-	min-height:350px
+	min-height:320px
 
 }
 
@@ -3491,6 +3491,8 @@ element.style {
   overflow: hidden;
   position: relative;
   text-align: center;
+  margin-right: 0px;
+    min-height: 200px;
 }
 
 .single-product .product-image .sale-tag {
@@ -3545,8 +3547,7 @@ element.style {
 }
 
 .single-product .product-image img {
-  max-height: 200px;
-  min-height: 200px;
+  max-height: 170px;
   -webkit-transition: all 0.4s ease;
   transition: all 0.4s ease;
   text-align: center;
@@ -5450,11 +5451,25 @@ blockquote span {
   border-radius: 4px;
 }
 
-.item-details .product-images img {  
+.item-details .product-images .main-img {  
+ width: 500px;
+ height: 400px;
+
+
+}
+
+.item-details .product-images .main-img img {  
   cursor: pointer;
   border-radius: 4px;
   overflow: hidden;
   padding: 5px;
+  max-width: 450px;
+  max-height: 450px;
+
+}
+.item-details .product-images .images img{
+  max-width: 70px;
+  max-height: 70px;
 
 }
  
@@ -5467,10 +5482,41 @@ blockquote span {
   Margin-top: 1em;
 }
 
+
+
+
 @media (max-width: 767px) {
   .item-details .product-images .images {
-    Grid-template-columns: repeat(3, 1fr);
+    Grid-template-columns: repeat(4, 1fr);
   }
+
+  .item-details .product-images .main-img img {  
+    cursor: pointer;
+    border-radius: 4px;
+    overflow: hidden;
+    padding: 5px;
+    max-width: 300px;
+    max-height: 300px;
+  
+  }
+  .item-details .product-images .main-img {  
+    width: 100%;
+    height: 250px;   
+   
+   }
+   
+   .item-details .product-images img {  
+     cursor: pointer;
+     border-radius: 4px;
+     overflow: hidden;
+     padding: 5px;
+     max-width: 80%;
+     max-height: 260px;
+     margin: auto;
+     display: flex;
+   
+   }
+
 
 }
 
