@@ -8,14 +8,14 @@
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-6 col-md-6 col-12">
-                         
+
                     </div>
                     <div class="col-lg-6 col-md-6 col-12">
                         <ul class="breadcrumb-nav">
                             <li><a href="{{ Route('home') }}"><i class="lni lni-home"></i> Home</a></li>
                             <li><a href="{{ Route('home') }}">Shop</a></li>
                             <li><a href="#">Cart</a></li>
-                             
+
                         </ul>
                     </div>
                 </div>
@@ -49,7 +49,7 @@
                         <div class="col-lg-2 col-md-2 col-12">
                             <p>اجمالى سعر المنتج</p>
                         </div>
- 
+
                         <div class="col-lg-1 col-md-2 col-12">
                             <p>حذف المنتج</p>
                         </div>
@@ -72,20 +72,20 @@
                                         href="{{ Route('products.show_product', $cart_item->product->slug) }}">
                                         {{ $cart_item->product->name }}</a></h5>
                                 <p class="product-des">
-                                    @if ($cart_item->product->measure=='kg')
-                                    <span><em>الوزن: </em> {{$cart_item->measure*1000}} جرام </span>
-                                    @endif    
-                                    @if ($cart_item->product->measure=='gram')
-                                    <span><em>الوزن:</em> {{$cart_item->measure}} جرام </span>
-                                    @endif    
-                                    
+                                    @if ($cart_item->product->measure == 'kg')
+                                        <span><em>الوزن: </em> {{ $cart_item->measure * 1000 }} جرام </span>
+                                    @endif
+                                    @if ($cart_item->product->measure == 'gram')
+                                        <span><em>الوزن:</em> {{ $cart_item->measure }} جرام </span>
+                                    @endif
+
                                     @if ($cart_item->size)
-                                    <span><em>المقاس: </em> {{$cart_item->size}}</span>
-                                    @endif    
+                                        <span><em>المقاس: </em> {{ $cart_item->size }}</span>
+                                    @endif
                                     @if ($cart_item->color)
-                                    <span><em>اللون: </em> {{$cart_item->color}}</span>
-                                    @endif    
-                                    <span><em>المتجر: </em> {{$cart_item->product->store->name}}  </span>
+                                        <span><em>اللون: </em> {{ $cart_item->color }}</span>
+                                    @endif
+                                    <span><em>المتجر: </em> {{ $cart_item->product->store->name }} </span>
                                 </p>
                             </div>
                             <div class="col-lg-2 col-md-2 col-12">
@@ -108,16 +108,14 @@
                             <div class="col-lg-2 col-md-2 col-12" id="sub_total_{{ $cart_item->product->id }}">
                                 <p id="sub_total_amount_{{ $cart_item->product->id }}">
                                     @php
-                                        if($cart_item->product->measure=='gram')
-                                        {
-                                          $price=  $cart_item->quantity * $cart_item->product->price* $cart_item->measure/100;  
-                                        }else 
-                                        {
-                                            $price=  $cart_item->quantity * $cart_item->product->price* $cart_item->measure;  
+                                        if ($cart_item->product->measure == 'gram') {
+                                            $price = ($cart_item->quantity * $cart_item->product->price * $cart_item->measure) / 100;
+                                        } else {
+                                            $price = $cart_item->quantity * $cart_item->product->price * $cart_item->measure;
                                         }
                                     @endphp
                                     {{ Currency::format($price) }}
-                                    
+
                                 </p>
                             </div>
 
@@ -191,29 +189,29 @@
                                         <li>الشحن
 
                                             @php
-                                            $user = Auth::user();
-                                            $neighborhood_shipping = $user->neighborhood->price;
-                                            $shipping_fees = 0;
-                                            $storeIds = [];
+                                                $user = Auth::user();
+                                                $neighborhood_shipping = $user->neighborhood->price;
+                                                $shipping_fees = 0;
+                                                $storeIds = [];
 
-                                            foreach ($cart->get() as $cart_item) {
-                                                $store_id = $cart_item->product->store_id;
+                                                foreach ($cart->get() as $cart_item) {
+                                                    $store_id = $cart_item->product->store_id;
 
-                                                if (!in_array($store_id, $storeIds)) {
-                                                    // If the store ID is not in the array, it's a unique store
-                                                    $storeIds[] = $store_id;
+                                                    if (!in_array($store_id, $storeIds)) {
+                                                        // If the store ID is not in the array, it's a unique store
+                                                        $storeIds[] = $store_id;
+                                                    }
                                                 }
-                                            }
-                                            // Now, $shipping_fees contains the total shipping fees based on the unique stores in the cart.
+                                                // Now, $shipping_fees contains the total shipping fees based on the unique stores in the cart.
 
-                                            $numberOfUniqueStores = count($storeIds);
-                                             if($numberOfUniqueStores===1){
-                                    $shipping_fees = $neighborhood_shipping;
-                                }else{
-                                    $shipping_fees = (($numberOfUniqueStores-1)*5)+$neighborhood_shipping;
-                                }
+                                                $numberOfUniqueStores = count($storeIds);
+                                                if ($numberOfUniqueStores === 1) {
+                                                    $shipping_fees = $neighborhood_shipping;
+                                                } else {
+                                                    $shipping_fees = ($numberOfUniqueStores - 1) * 5 + $neighborhood_shipping;
+                                                }
 
-                                        @endphp
+                                            @endphp
                                             <span class="shipping">
                                                 {{-- Free --}}
                                                 {{-- {{ $shipping_fees }} --}}
@@ -255,7 +253,7 @@
     </div>
     <!--/ End Shopping Cart -->
 
-    
+
     @push('scripts')
         <script src="{{ asset('backend/assets/js/jquery-3.6.0.min.js') }}"></script>
 
@@ -370,8 +368,6 @@
                     });
                 }
             });
-
-
         </script>
 
         {{-- <script src="{{ asset('frontend/assets/js/cart.js') }}"></script> --}}

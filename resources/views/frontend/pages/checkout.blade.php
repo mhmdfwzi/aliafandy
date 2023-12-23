@@ -4,7 +4,7 @@
 
     <x-slot name="breadcrumbs">
 
- 
+
         <!-- Start Breadcrumbs -->
         <div class="breadcrumbs">
             <div class="container">
@@ -42,8 +42,9 @@
                 <div class="col-lg-8">
 
                     <form action="{{ Route('checkout.store') }}" method="post">
-                        
+
                         @csrf
+                        <input type="hidden" name="changed_shipping_fees">
                         <input type="hidden" name="shipping_fees" value="{{ $shipping_fees }}">
                         <div class="checkout-steps-form-style-1">
                             <ul id="accordionExample">
@@ -57,100 +58,102 @@
                                         aria-labelledby="headingThree" data-bs-parent="#accordionExample">
                                         <div class="row">
 
-                                            <div class="col-md-12"   >
-                                                <div class="single-form form-default">
-                                                    {{-- <label>User Name</label> --}}
-                                                    <div class="row"> 
-                                                            <x-frontend.form.input name="address[billing][first_name]"
-                                                            placeholder="الاسم الاول  "
-                                                                value="{{ Auth::check() ? Auth::user()->first_name : old('address.billing.first_name') }}" />
-                                                         
-                                                         
-                                                    </div>
-                                                </div>
-                                            </div> 
 
-                                            <div class="col-md-12"   >
+
+                                            <div class="col-md-12">
                                                 <div class="single-form form-default">
                                                     {{-- <label>User Name</label> --}}
                                                     <div class="row">
-                                                      
-                                                            <x-frontend.form.input name="address[billing][last_name]"
+                                                        <x-frontend.form.input name="address[billing][first_name]"
+                                                            placeholder="الاسم الاول  "
+                                                            value="{{ Auth::check() ? Auth::user()->first_name : old('address.billing.first_name') }}" />
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12">
+                                                <div class="single-form form-default">
+                                                    {{-- <label>User Name</label> --}}
+                                                    <div class="row">
+
+                                                        <x-frontend.form.input name="address[billing][last_name]"
                                                             placeholder="الاسم الثانى  "
-                                                                value="{{ Auth::check() ? Auth::user()->last_name : old('address.billing.last_name') }}" />
-                                                         
+                                                            value="{{ Auth::check() ? Auth::user()->last_name : old('address.billing.last_name') }}" />
+
                                                     </div>
                                                 </div>
-                                            </div> 
+                                            </div>
 
-                                            <div class="col-md-12"   >
+                                            <div class="col-md-12">
                                                 <div class="single-form form-default">
                                                     {{-- <label>User Name</label> --}}
-                                                    <div class="row"> 
-                                                            <x-frontend.form.input name="address[billing][phone_number]"
-                                                        placeholder="رقم التليفون"
+                                                    <div class="row">
+                                                        <x-frontend.form.input name="address[billing][phone_number]"
+                                                            placeholder="رقم التليفون"
                                                             value="{{ Auth::check() ? Auth::user()->phone_number : old('address.billing.phone_number') }}" />
-                                                   
-                                                         
-                                                    </div>
-                                                </div>
-                                            </div> 
 
-                                            <div class="col-md-12"   >
-                                                <div class="single-form form-default">
-                                                    {{-- <label>User Name</label> --}}
-                                                    <div class="row"> 
-                                                        <select name="address[billing][governorate_id]"  
-                                                        class="custom-select mr-sm-2 form-control" >
-                                                           <option disabled selected>
-                                                               {{ trans('auth_trans.Choose_Governorate') }}
-                                                           </option>
-                                                           @foreach ($destinations as $destination)
-                                                               @if ($destination->rank == '1')
-                                                                   <option value="{{ $destination->id }}"
-                                                                       @if (Auth::check()) {{ Auth::user()->governorate->id == $destination->id ? 'selected' : '' }}
-                                                                       @else
-                                                                           {{ old('address.billing.governorate_id') == $destination->id ? 'selected' : '' }} @endif>
-                                                                       {{ $destination->name }}
-                                                                   </option>
-                                                               @endif
-                                                           @endforeach
-                                                       </select>
-                                                         
+
                                                     </div>
                                                 </div>
-                                            </div> 
-  
-                                            <div class="col-md-12"   >
+                                            </div>
+
+                                            <div class="col-md-12">
+                                                <div class="single-form form-default">
+                                                    <div class="row">
+                                                        <select name="address[billing][governorate_id]"
+                                                            class="custom-select mr-sm-2 form-control">
+                                                            <option disabled selected>
+                                                                {{ trans('auth_trans.Choose_Governorate') }}
+                                                            </option>
+                                                            @foreach ($destinations as $destination)
+                                                                @if ($destination->rank == '1')
+                                                                    <option value="{{ $destination->id }}"
+                                                                        @if (Auth::check()) {{ Auth::user()->governorate->id == $destination->id ? 'selected' : '' }}
+                                                                        @else
+                                                                        {{ old('address.billing.governorate_id') == $destination->id ? 'selected' : '' }} @endif>
+                                                                        {{ $destination->name }}
+                                                                    </option>
+                                                                @endif
+                                                            @endforeach
+                                                        </select>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12">
                                                 <div class="single-form form-default">
                                                     {{-- <label>User Name</label> --}}
-                                                    <div class="row"> 
+                                                    <div class="row">
                                                         <select name="address[billing][city_id]" id=""
-                                                        class="custom-select mr-sm-2 form-control" >
-                                                           <option disabled selected>
-                                                               {{ trans('auth_trans.Choose_City') }}
-                                                           </option>
-                                                           @foreach ($destinations as $destination)
-                                                               @if ($destination->rank == '2')
-                                                                   <option value="{{ $destination->id }}"
-                                                                       @if (Auth::check()) {{ Auth::user()->city->id == $destination->id ? 'selected' : '' }}
+                                                            class="custom-select mr-sm-2 form-control">
+                                                            <option disabled selected>
+                                                                {{ trans('auth_trans.Choose_City') }}
+                                                            </option>
+                                                            @foreach ($destinations as $destination)
+                                                                @if ($destination->rank == '2')
+                                                                    <option value="{{ $destination->id }}"
+                                                                        @if (Auth::check()) {{ Auth::user()->city->id == $destination->id ? 'selected' : '' }}
                                                                        @else
                                                                            {{ old('address.billing.city_id') == $destination->id ? 'selected' : '' }} @endif>
-                                                                       {{ $destination->name }}
-                                                                   </option>
-                                                               @endif
-                                                           @endforeach
-                                                       </select>
-                                                     </div>
+                                                                        {{ $destination->name }}
+                                                                    </option>
+                                                                @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
                                                 </div>
-                                            </div> 
+                                            </div>
 
-                                            <div class="col-md-12"   >
+                                            <div class="col-md-12">
                                                 <div class="single-form form-default">
                                                     {{-- <label>User Name</label> --}}
-                                                    <div class="row"> 
-                                                        <select name="address[billing][neighborhood_id]" id=""
-                                                        class="custom-select mr-sm-2 form-control" >
+                                                    <div class="row">
+                                                        <select name="address[billing][neighborhood_id]"
+                                                            id="destinationSelect"
+                                                            class="custom-select mr-sm-2 form-control">
                                                             <option disabled selected>
                                                                 {{ trans('auth_trans.Choose_Neighborhood') }}
                                                             </option>
@@ -167,30 +170,30 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                            </div> 
+                                            </div>
 
- 
 
-                                            <div class="col-md-12"   >
+
+                                            <div class="col-md-12">
                                                 <div class="single-form form-default">
                                                     {{-- <label>User Name</label> --}}
-                                                    <div class="row"> 
+                                                    <div class="row">
                                                         <x-frontend.form.input name="address[billing][street_address]"
-                                                        value="{{ Auth::check() ? Auth::user()->street_address : old('address.billing.street_address') }}" />
-                                                     
+                                                            value="{{ Auth::check() ? Auth::user()->street_address : old('address.billing.street_address') }}" />
+
                                                     </div>
                                                 </div>
-                                            </div> 
+                                            </div>
 
-                                      
-  
+
+
 
 
                                         </div>
                                     </section>
 
                                 </li>
-                              
+
                                 {{-- <li>
                                     <h6 class="title collapsed" data-bs-toggle="collapse"
                                         data-bs-target="#collapsefive" aria-expanded="false"
@@ -244,8 +247,7 @@
                                 </li> --}}
 
                                 <div class="single-form form-default button">
-                                    <button type="submit"
-                                        class="btn">انهاء الطلب</button>
+                                    <button type="submit" class="btn">انهاء الطلب</button>
                                 </div>
                             </ul>
                         </div>
@@ -262,12 +264,12 @@
                 <div class="col-lg-4">
                     <div class="checkout-sidebar">
 
-                        
+
 
 
 
                         <div class="checkout-sidebar-price-table mt-30">
-                            <h5 class="title">بيانات  المدفوعات</h5>
+                            <h5 class="title">بيانات المدفوعات</h5>
 
                             <div class="sub-total-price">
                                 <div class="total-price">
@@ -275,35 +277,40 @@
                                     <p class="price">{{ Currency::format($cart->total()) }}</p>
                                 </div>
 
+                                <div id="destination_price" class="d-none">
+
+                                </div>
+
                                 @php
-                                $user = Auth::user();
-                                $neighborhood_shipping = $user->neighborhood->price;
-                                $shipping_fees = 0;
-                                $storeIds = [];
+                                    $user = Auth::user();
+                                    $neighborhood_shipping = $user->neighborhood->price;
+                                    $shipping_fees = 0;
+                                    $storeIds = [];
 
-                                foreach ($cart->get() as $cart_item) {
-                                    $store_id = $cart_item->product->store_id;
+                                    foreach ($cart->get() as $cart_item) {
+                                        $store_id = $cart_item->product->store_id;
 
-                                    if (!in_array($store_id, $storeIds)) {
-                                        // If the store ID is not in the array, it's a unique store
-                                        $storeIds[] = $store_id;
+                                        if (!in_array($store_id, $storeIds)) {
+                                            // If the store ID is not in the array, it's a unique store
+                                            $storeIds[] = $store_id;
+                                        }
                                     }
-                                }
-                                // Now, $shipping_fees contains the total shipping fees based on the unique stores in the cart.
+                                    $numberOfUniqueStores = count($storeIds);
+                                    if ($numberOfUniqueStores === 1) {
+                                        $shipping_fees = $neighborhood_shipping;
+                                    } else {
+                                        $shipping_fees = ($numberOfUniqueStores - 1) * 5 + $neighborhood_shipping;
+                                    }
 
-                                $numberOfUniqueStores = count($storeIds);
-                                 if($numberOfUniqueStores===1){
-                        $shipping_fees = $neighborhood_shipping;
-                    }else{
-                        $shipping_fees = (($numberOfUniqueStores-1)*5)+$neighborhood_shipping;
-                    }
-
-                            @endphp
+                                @endphp
 
                                 <div class="total-price shipping">
                                     <p class="value">الشحن :</p>
-                                    <p class="price"> {{ Currency::format($shipping_fees) }}</p>
+                                    <p class="price" id="shippingPrice"> {{ Currency::format($shipping_fees) }}</p>
                                 </div>
+
+
+
                                 <div class="total-price discount">
                                     <p class="value">كوبون الخصم:</p>
                                     <p class="price">
@@ -364,6 +371,64 @@
                             shippingFields.eq(index).val($(this).val());
                         });
                     }
+                });
+
+
+                var destinationSelect = $('#destinationSelect');
+
+                destinationSelect.on('change', function() {
+                    var selectedDestination = destinationSelect.val();
+
+                    $.ajax({
+                        url: "{{ route('getDestinationPrice', ['destination_id' => ':destination_id']) }}"
+                            .replace(':destination_id', selectedDestination),
+                        type: "GET",
+                        success: function(response) {
+                            var newShippingPrice = response.price;
+
+                            // Update the DOM with the new shipping price
+                            $('#destination_price').text(newShippingPrice);
+
+                            $('input[name="changed_shipping_fees"]').val(newShippingPrice);
+
+
+                            // Second AJAX request to get formatted currency
+                            var destinationPrice = parseFloat($('#destination_price').text());
+
+                            $.ajax({
+                                url: "{{ route('get_formatted_currency') }}/" +
+                                    destinationPrice,
+                                type: "GET",
+                                success: function(response) {
+                                    console.log(response.formatted_currency);
+                                    $('#shippingPrice').html(response
+                                        .formatted_currency);
+                                },
+                                error: function(xhr) {
+                                    console.log(xhr.responseText);
+                                }
+                            });
+
+
+                        },
+                        error: function(xhr) {
+                            console.error(xhr.responseText);
+                        }
+                    });
+
+                    // var destinationPrice = parseFloat($('#destination_price'));
+
+                    // $.ajax({
+                    //     url: "{{ route('get_formatted_currency') }}/" + destinationPrice,
+                    //     type: "GET",
+                    //     success: function(response) {
+                    //         console.log(response.formatted_currency);
+                    //         $('#shippingPrice').html(response.formatted_currency);
+                    //     },
+                    //     error: function(xhr) {
+                    //         console.log(xhr.responseText);
+                    //     }
+                    // });
                 });
             });
         </script>

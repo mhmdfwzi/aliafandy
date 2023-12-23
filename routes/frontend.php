@@ -28,14 +28,15 @@ Route::group([
     Route::group(
         ['middleware' => ['auth:web','email_verified']],
         function () {
-          
+
             Route::resource('cart', CartController::class);
             Route::post('/apply-coupon', [CartController::class, 'applyCoupon'])->name('cart.applyCoupon');
             Route::resource('reviews', ReviewsController::class);
             Route::get('/checkout', [CheckoutController::class, 'create'])->name('checkout.create');
-            Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');            
+            Route::get('/getDestinationPrice/{destination_id}', [CheckoutController::class,'getDestinationPrice'])->name('getDestinationPrice');
+            Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
             Route::get('/profile_edit', [ProfileController::class, 'edit'])->name('profile.edit');
-            Route::put('/profile_update', [ProfileController::class, 'update'])->name('profile.update'); 
+            Route::put('/profile_update', [ProfileController::class, 'update'])->name('profile.update');
 
 
         }
@@ -49,7 +50,7 @@ Route::group([
     Route::get('/user/get-neighborhoods', [ProfileController::class, 'getNeighborhoods']);
     Route::resource('jobs', Jobscontroller::class);
     Route::get('/product_autocomplete', [ProductsController::class, 'productAutocomplete'])->name('products.autocomplete');
-    
+
 
 
     Route::get('/all_products', [ProductsController::class, 'index'])->name('products.show_all');
@@ -76,12 +77,12 @@ Route::group([
         return view('frontend.pages.send_otp');
     });
     Route::post('/send-otp', [SendOTPController::class,'sendOTP'])->name('send-otp');
-	
-	Route::get('/offers/{categoryId?}', [OffersController::class, 'index'])->name('offers.index');
+
+    Route::get('/offers/{categoryId?}', [OffersController::class, 'index'])->name('offers.index');
     Route::get('/offers_filters', [OffersController::class, 'offers_filters'])->name('offers_filters');
     Route::get('/offers_store/{storeId?}', [OffersController::class, 'store'])->name('offers.store');
 
 
- 
+
 
 });
