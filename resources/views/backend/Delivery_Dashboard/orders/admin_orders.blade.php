@@ -87,225 +87,175 @@
 
 
 
-                    <table id="custom_table_1" class="custom_table_1">
-                        <thead>
-                            <tr>
-                                <th>{{ trans('orders_trans.Cart_Number') }}</th>
-                                <th>{{ trans('orders_trans.Id') }}</th>
-                                <th>{{ trans('orders_trans.User_Name') }}</th>
-                                <th>{{ trans('orders_trans.Store_Name') }}</th>
-                                <th>{{ trans('orders_trans.Category_Name') }}</th>
-                                <th>{{ trans('orders_trans.Status') }}</th>
-                                <th>{{ trans('orders_trans.Order_Number') }}</th>
-                                <th>{{ trans('orders_trans.Total') }}</th>
-                                <th>{{ trans('orders_trans.Control') }}</th>
-                            </tr>
-                        </thead>
+                    @php
+                    $groupedOrders = $orders->groupBy('cart_id');
+                @endphp
 
+                @foreach ($groupedOrders as $cartId => $ordersGroup)
+                    <table  width='100%' style="direction:rtl;background-color: #ddd" border='1' >
+                        <tr>
+                            <td>كود</td>
+                            <td>{{ $cartId }}</td>
+                        </tr>
+                        <tr>
+                            <td>وقت الطلب</td>
+                            <td>{{ $ordersGroup[0]->user->created_at }}</td>
+                        </tr>
+                        <tr>
+                            <td>العميل</td>
+                            <td>{{ $ordersGroup[0]->user->first_name }} -
+                                {{ $ordersGroup[0]->user->phone_number }}
+                                <br>
+                                {{ $ordersGroup[0]->user->street_address }} ->
+                                {{ $ordersGroup[0]->user->neighborhood->name }}
 
-                        <tbody>
-                            @php
-                                $groupedOrders = $orders->groupBy('cart_id');
-                            @endphp
-
-                            @foreach ($groupedOrders as $cartId => $ordersGroup)
-                                <tr>
-                                    <!-- Cart ID with rowspan -->
-                                    <td rowspan="{{ $ordersGroup->count() }}">{{ $cartId }}</td>
-
-                                    <!-- First order's details -->
-                                    <td>{{ $ordersGroup[0]->id }}</td>
-                                    <td>{{ $ordersGroup[0]->user->first_name }}</td>
-                                    <td>{{ $ordersGroup[0]->store->name }}</td>
-                                    <td>
-                                        @foreach ($ordersGroup[0]->products as $product)
-                                            / {{ $product->category->name }}
-                                        @endforeach
-                                    </td>
-
-
-                                    <td>
-                                        @if ($ordersGroup[0]->status == 'pending')
-                                            <span class="badge badge-rounded badge-info p-2 mb-2">
-                                                {{ trans('orders_trans.Pending') }}
-                                            </span>
-                                        @elseif($ordersGroup[0]->status == 'processing')
-                                            <span class="badge badge-rounded badge-primary p-2 mb-2">
-                                                {{ trans('orders_trans.Processing') }}
-                                            </span>
-                                        @elseif($ordersGroup[0]->status == 'delivering')
-                                            <span class="badge badge-rounded badge-warning p-2 mb-2">
-                                                {{ trans('orders_trans.Delivering') }}
-                                            </span>
-                                        @elseif($ordersGroup[0]->status == 'completed')
-                                            <span class="badge badge-rounded badge-success p-2 mb-2">
-                                                {{ trans('orders_trans.Completed') }}
-                                            </span>
-                                        @elseif($ordersGroup[0]->status == 'cancelled')
-                                            <span class="badge badge-rounded badge-danger p-2 mb-2">
-                                                {{ trans('orders_trans.Cancelled') }}
-                                            </span>
-                                        @elseif($ordersGroup[0]->status == 'refunded')
-                                            <span class="badge badge-rounded badge-danger p-2 mb-2">
-                                                {{ trans('orders_trans.Refunded') }}
-                                            </span>
-                                        @endif
-                                    </td>
-                                    <td>{{ $ordersGroup[0]->number }}</td>
-
-
-                                    <td>
-                                        @php
-                                            $totalPrice = 0;
-                                        @endphp
-
-                                        @foreach ($ordersGroup[0]->products as $product)
-                                            @php
-                                                $totalPrice += $product->price;
-                                            @endphp
-                                        @endforeach
-
-                                        {{ Currency::format($totalPrice) }}
-                                    </td>
-
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @php
+                                    $totalPrice = 0;
+                                @endphp
+                                @foreach ($ordersGroup as $additionalOrder0)
                                     @php
-                                        $order_delivery = App\Models\OrderDelivery::where('order_id', $ordersGroup[0]->id)->first();
-                                        $delivery = $order_delivery ? App\Models\Delivery::where('id', $order_delivery->delivery_id)->first() : null;
+
                                     @endphp
-                                    <td rowspan="{{ $ordersGroup->count() }}">
-                                        @can('assignDelivery', App\Models\Delivery::class)
-                                            @if ($order_delivery)
-                                                <div>{{ $delivery->name }} تم أرسال الطلب لمندوب الشحن</div>
-                                            @else
-                                                <button type="button" class="button x-small" data-toggle="modal"
-                                                    data-target="#assign_delivery"
-                                                    data-cart-id="{{ $ordersGroup[0]->cart_id }}"
-                                                    data-order-id="{{ $ordersGroup[0]->id }}">
-                                                    {{ trans('orders_trans.Assign_Delivery') }}
-                                                </button>
-                                            @endif
-                                        @endcan
-                                    </td>
 
-
-
-                                </tr>
-
-
-
-                                @foreach ($ordersGroup->skip(1) as $additionalOrder)
-                                    <tr>
-                                        <!-- Only display order details (except cart ID) for additional rows -->
-                                        <td>{{ $additionalOrder->id }}</td>
-                                        <td>{{ $additionalOrder->user->first_name }}</td>
-                                        <td>{{ $additionalOrder->store->name }}</td>
-                                        <td>
-                                            @foreach ($additionalOrder->products as $product)
-                                                / {{ $product->category->name }}
-                                            @endforeach
-                                        </td>
-
-                                        <td>
-                                            @if ($additionalOrder->status == 'pending')
-                                                <span class="badge badge-rounded badge-info p-2 mb-2">
-                                                    {{ trans('orders_trans.Pending') }}
-                                                </span>
-                                            @elseif($additionalOrder->status == 'processing')
-                                                <span class="badge badge-rounded badge-primary p-2 mb-2">
-                                                    {{ trans('orders_trans.Processing') }}
-                                                </span>
-                                            @elseif($additionalOrder->status == 'delivering')
-                                                <span class="badge badge-rounded badge-waring p-2 mb-2">
-                                                    {{ trans('orders_trans.Delivering') }}
-                                                </span>
-                                            @elseif($additionalOrder->status == 'completed')
-                                                <span class="badge badge-rounded badge-success p-2 mb-2">
-                                                    {{ trans('orders_trans.Completed') }}
-                                                </span>
-                                            @elseif($additionalOrder->status == 'cancelled')
-                                                <span class="badge badge-rounded badge-danger p-2 mb-2">
-                                                    {{ trans('orders_trans.Cancelled') }}
-                                                </span>
-                                            @elseif($additionalOrder->status == 'refunded')
-                                                <span class="badge badge-rounded badge-danger p-2 mb-2">
-                                                    {{ trans('orders_trans.Refunded') }}
-                                                </span>
-                                            @endif
-                                        </td>
-                                        <td>{{ $additionalOrder->number }}</td>
-                                        <td>
-                                            @php
-                                                $totalPrice = 0;
-                                            @endphp
-
-                                            @foreach ($additionalOrder->products as $product)
-                                                @php
-                                                    $totalPrice += $product->price;
-                                                @endphp
-                                            @endforeach
-
-                                            {{ Currency::format($totalPrice) }}
-                                        </td>
-
-
-
-
-                                    </tr>
+                                    @foreach ($additionalOrder0->products as $product)
+                                        @php
+                                            $totalPrice = $totalPrice + $product->order_item->price;
+                                        @endphp
+                                    @endforeach
                                 @endforeach
-                            @endforeach
+                                
+                                {{ Currency::format($totalPrice+$ordersGroup[0]->shipping) }}
+ 
+                            </td>
+                            <td>المطلوب من العميل</td>
+                        </tr>
+                        <tr>
+                            <td>الحالة
+                                @if ($ordersGroup[0]->status == 'pending')
+                                <span class="badge badge-rounded badge-success p-2 mb-2">
+                                    {{ trans('orders_trans.Pending') }}
+                                </span>
+                            @elseif($ordersGroup[0]->status == 'processing')
+                                <span class="badge badge-rounded badge-danger p-2 mb-2">
+                                    {{ trans('orders_trans.Processing') }}
+                                </span>
+                            @elseif($ordersGroup[0]->status == 'delivering')
+                                <span class="badge badge-rounded badge-danger p-2 mb-2">
+                                    {{ trans('orders_trans.Delivering') }}
+                                </span>
+                            @elseif($ordersGroup[0]->status == 'completed')
+                                <span class="badge badge-rounded badge-danger p-2 mb-2">
+                                    {{ trans('orders_trans.Completed') }}
+                                </span>
+                            @elseif($ordersGroup[0]->status == 'cancelled')
+                                <span class="badge badge-rounded badge-danger p-2 mb-2">
+                                    {{ trans('orders_trans.Cancelled') }}
+                                </span>
+                            @elseif($ordersGroup[0]->status == 'refunded')
+                                <span class="badge badge-rounded badge-danger p-2 mb-2">
+                                    {{ trans('orders_trans.Refunded') }}
+                                </span>
+                            @endif
 
-                        </tbody>
-                    </table>
+                            </td>
+                            <td>
+                                @php
+                                $order_delivery = App\Models\OrderDelivery::where('order_id', $ordersGroup[0]->id)->first();
+                                $delivery = $order_delivery ? App\Models\Delivery::where('id', $order_delivery->delivery_id)->first() : null;
+                            @endphp 
+                                @can('assignDelivery', App\Models\Delivery::class)
+                                    @if ($order_delivery)
+                                        <div>{{ $delivery->name }} تم أرسال الطلب لمندوب الشحن</div>
+                                    @else
+                                        <button type="button" class="button x-small" data-toggle="modal"
+                                            data-target="#assign_delivery"
+                                            data-cart-id="{{ $ordersGroup[0]->cart_id }}"
+                                            data-order-id="{{ $ordersGroup[0]->id }}">
+                                            {{ trans('orders_trans.Assign_Delivery') }}
+                                        </button>
+                                    @endif
+                                @endcan
+
+                                
 
 
-                    {{-- mobile table --}}
-                    <table id="custom_table_2" class="cutom_table_2">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                {{-- <th>{{ trans('orders_trans.Cart_Number') }}</th> --}}
-                                <th>{{ trans('orders_trans.Id') }}</th>
-                                <th>{{ trans('orders_trans.Delivered') }}</th>
-                                <th>{{ trans('orders_trans.Control') }}</th>
-                            </tr>
-                        </thead>
 
-                        <tbody>
-                            @php
-                                $groupedOrders = $orders->groupBy('cart_id');
+                                @php
+                                    $order_delivery = App\Models\OrderDelivery::where('order_id', $ordersGroup[0]->id)->first();
+                                    $delivery = $order_delivery ? App\Models\Delivery::where('id', $order_delivery->delivery_id)->first() : null;
+                                @endphp
+
+                              
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan='2'>الطلبات </td>
+                        </tr>
+                        <tr>
+                            <td> @php
+                                $totalPrice = 0;
                             @endphp
 
-                            @foreach ($groupedOrders as $cartId => $ordersGroup)
-                                <tr>
-                                    <!-- Cart ID with rowspan -->
-                                    <td rowspan="{{ $ordersGroup->count() }}">
-                                        {{-- {{ $cartId }} --}}
-                                        {{ $loop->iteration }}
-                                    </td>
-
-                                    <!-- First order's details -->
-                                    <td>{{ $ordersGroup[0]->id }}</td>
-
-
-
-
-                                </tr>
-
-
-
-                                @foreach ($ordersGroup->skip(1) as $additionalOrder)
-                                    <tr>
-                                        <!-- Only display order details (except cart ID) for additional rows -->
-                                        <td>{{ $additionalOrder->id }}</td>
-
-
-                                    </tr>
+                                @foreach ($ordersGroup[0]->products as $product)
+                                    @php
+                                        $totalPrice += $product->order_item->price;
+                                    @endphp
                                 @endforeach
-                            @endforeach
+                                @php
+                                    $totalPrice = $totalPrice - ($totalPrice * $ordersGroup[0]->store->percent) / 100;
+                                @endphp
+                                {{ Currency::format($totalPrice) }}
+                            </td>
+                            <td>
+                                {{ $ordersGroup[0]->store->name }} 
 
-                        </tbody>
+                            </td>
+                        </tr>
+
+
+                        @foreach ($ordersGroup->skip(1) as $additionalOrder)
+                            <tr>
+                                <td> @php
+                                    $totalPrice = 0;
+                                @endphp
+
+                                    @foreach ($additionalOrder->products as $product)
+                                        @php
+                                            $totalPrice += $product->order_item->price;
+                                        @endphp
+                                    @endforeach
+                                    @php
+                                        $totalPrice = $totalPrice - ($totalPrice * $additionalOrder->store->percent) / 100;
+                                    @endphp
+                                    {{ Currency::format($totalPrice) }}
+                                </td>
+                                <td>
+                                    {{ $additionalOrder->store->name }} 
+
+
+                                </td>
+                            </tr>
+                        @endforeach
+
+
+
+
+
                     </table>
+                    <br>
+                @endforeach 
 
+
+
+
+
+
+
+  
 
                     <!-- Assign Delivery modal -->
                     <div class="modal fade" id="assign_delivery" tabindex="-1" role="dialog"
