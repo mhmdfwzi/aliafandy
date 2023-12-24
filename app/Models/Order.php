@@ -6,12 +6,15 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use function PHPSTORM_META\map;
+
 class Order extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'store_id', 'user_id', 'payment_method', 'status', 'status_method','coupon_id','total','cart_id','shipping','percent'
+        'store_id', 'user_id', 'payment_method', 'status', 'status_method','coupon_id','total','cart_id','shipping','percent',
+        'store_order_total','total'
     ];
 
     protected static function booted()

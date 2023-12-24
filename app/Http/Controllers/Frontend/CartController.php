@@ -70,14 +70,14 @@ class CartController extends Controller
 
         $product = Product::findOrFail($request->post('product_id'));
 
-        $cart->add($product, 
-        $request->post('quantity'),
-        $request->post('color'),
-        $request->post('size'),
-        $request->post('measure'),
-        
-    );
-       
+        $cart->add(
+            $product,
+            $request->post('quantity'),
+            $request->post('color'),
+            $request->post('size'),
+            $request->post('measure'),
+        );
+
 
         return redirect()->route('cart.index');
     }
@@ -134,11 +134,13 @@ class CartController extends Controller
         //
         $this->cart->delete($id);
         $response = [
-            'cartHtml' => view('components.frontend.cart-menu',
-            ['items'=>CartFacade::get(),'total'=>CartFacade::total()])->render(), // Assuming you have a partials/cart.blade.php file
+            'cartHtml' => view(
+                'components.frontend.cart-menu',
+                ['items' => CartFacade::get(),'total' => CartFacade::total()]
+            )->render(), // Assuming you have a partials/cart.blade.php file
             'totalItems' => Cart::count(), // Adjust this based on your actual logic to get the total items in the cart
         ];
-        
+
         return response()->json($response);
 
 
@@ -217,12 +219,12 @@ class CartController extends Controller
 
         $this->cart->update($cart_id, $quantity, $product_id);
 
-        if($product_measure==.10){
-            $sub_total =  $quantity*$product_price*$item_measure/100;
-        }else{
-            $sub_total =  $quantity*$product_price*$item_measure;
+        if($product_measure == .10) {
+            $sub_total =  $quantity * $product_price * $item_measure / 100;
+        } else {
+            $sub_total =  $quantity * $product_price * $item_measure;
         }
-       
+
 
         $formatted_sub_total = Currency::format($sub_total);
 
@@ -237,7 +239,9 @@ class CartController extends Controller
 
     public function getFormattedCurrency($amount)
     {
-        // dd($amount);
+        if (is_string($amount)) {
+            $amount = floatval($amount);
+        }
         $formattedCurrency = Currency::format($amount);
         return response()->json([
             'formatted_currency' => $formattedCurrency,
@@ -263,7 +267,5 @@ class CartController extends Controller
     }
 
 
-    public function calculateShippingFees(){
-        
-    }
+    public function calculateShippingFees() {}
 }

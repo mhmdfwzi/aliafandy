@@ -2,7 +2,7 @@
 @section('css')
 
 @section('title')
-    {{ trans('product_variant_trans.Create_Product_Variant') }}
+   اضافة الخواص للمنتج
 @stop
 @endsection
 @section('page-header')
@@ -11,19 +11,14 @@
 <div class="page-title">
     <div class="row">
         <div class="col-sm-6">
-            <h4 class="mb-0">{{ trans('product_variant_trans.Create_Product_Variant') }}</h4>
+            <h4 class="mb-0"> اضافة الخواص للمنتج</h4>
+            <br>
         </div>
-        <div class="col-sm-6">
-            <ol class="breadcrumb pt-0 pr-0 float-left float-sm-right ">
-                <li class="breadcrumb-item"><a href="#"
-                        class="default-color">{{ trans('product_variant_trans.Create_Product_Variant') }}</a></li>
-                <li class="breadcrumb-item active">{{ trans('product_variant_trans.Product_Variants') }}</li>
-            </ol>
-        </div>
+ 
     </div>
 </div>
 <!-- breadcrumb -->
-
+ 
 @endsection
 @section('content')
 
@@ -31,13 +26,12 @@
     <div class="col-md-12 mb-30">
         <div class="card card-statistics h-100">
             <div class="card-body">
-
+ 
                 <table id="product-variants-table" class="display">
                     <thead>
                         <tr>
                             <th>{{ trans('product_variant_trans.Id') }}</th>
                             <th>الخاصية</th>
-                            <th>الصورة</th>
                             <th>القيمة</th>
                             <th>التحكم</th>
                         </tr>
@@ -47,22 +41,18 @@
                             <tr style="text-align:center">
 
                                 <td>{{ $product_variant->id }}</td>
+
+                                <td>{{ $product_variant->attribute->name }}</td>
                                 <td>
+                                    @if($product_variant->image)
                                     <img src="{{ $product_variant->image_url }}" height="50" width="50"
                                         alt="">
-                                </td>
-                                <td>{{ $product_variant->attribute->name }}</td>
-                                <td>{{ $product_variant->attribute_value->value }}</td>
+                                    @endif
+                                {{ $product_variant->attribute_value->value }}
+                            </td>
 
                                 <td>
-                                    <a href="" class="btn btn-primary btn-sm">
-                                        <i class="fa fa-eye"></i>
-                                    </a>
-                                    <a href="{{ Route('vendor.product_variants.edit', $product_variant->id) }}"
-                                        class="btn btn-warning btn-sm">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
-
+ 
 
                                     <form action="{{ Route('vendor.product_variants.destroy', $product_variant->id) }}"
                                         method="post" style="display:inline">
