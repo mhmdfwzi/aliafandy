@@ -83,4 +83,6 @@ Route::group([
     Route::get('/offers_store/{storeId?}', [OffersController::class, 'store'])->name('offers.store');
 
 
+
+
 });
