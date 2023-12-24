@@ -268,4 +268,8 @@ class CartController extends Controller
 
 
     public function calculateShippingFees() {}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> f8770e852d3cc719d96d54de2c0afbea3d3f7ec5

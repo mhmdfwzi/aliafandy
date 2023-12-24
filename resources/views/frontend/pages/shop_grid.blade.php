@@ -58,6 +58,9 @@
                         <!-- Start Categories Filter -->
                         <div class="single-widget">
 
+
+
+
                             @if (isset($categories))
                                 <div class="checkout-steps-form-style-1">
                                     <ul id="accordionExample">
@@ -100,6 +103,7 @@
 
                                     </ul>
                                 </div>
+
                             @endif
                         </div>
 
