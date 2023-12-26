@@ -4,59 +4,46 @@
     {{ trans('orders_trans.Orders') }}
 @endsection
 @push('style')
-    <style>
-        /* Default styles for the table */
-        .custom_table_1 {
+<style>
+    /* Default styles for the table */
+    .custom_table_1 th,
+        .custom_table_1 td {
+            border: 1px solid #ddd;
+            padding: 1px;
+            text-align: center;
+           
+        }
+        .custom_table_1{
+            width: 100%;
+        }  
+
+    .modal2 {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 1060;
+        display: none;
+        overflow: hidden;
+        outline: 0;
+    }
+
+    .cutom_table_2 {
+            display: table;
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
         }
 
-        .custom_table_1 th,
-        .custom_table_1 td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
+        .cutom_table_2 th,
+        .cutom_table_2 td { 
+            padding: 2px;
+            text-align: right;
+                background-color: #f8f8f8;
+                border: 1px solid #e3e2e2;
         }
-
-        .cutom_table_2 {
-            display: none;
-        }
-
-        .modal2 {
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            z-index: 1060;
-            display: none;
-            overflow: hidden;
-            outline: 0;
-        }
-
-        /* Responsive styles - hide columns on small screens */
-        @media screen and (max-width: 600px) {
-            .custom_table_1 {
-                display: none
-            }
-
-
-            .cutom_table_2 {
-                display: table;
-                width: 100%;
-                border-collapse: collapse;
-                margin-bottom: 20px;
-            }
-
-            .cutom_table_2 th,
-            .cutom_table_2 td {
-                border: 1px solid #ddd;
-                padding: 8px;
-                text-align: center;
-            }
-        }
-    </style>
+</style>
 @endpush
 
 @section('page-header')
@@ -64,16 +51,10 @@
     <div class="page-title">
         <div class="row">
             <div class="col-sm-6">
-                <h4 class="mb-2"> تقارير الدليفرى للطلبات </h4>
-                <h4 class="mb-4"> تاريخ : {{ $today }}</h4>
+                <h4 class="mb-2"> تقارير الدليفرى للطلبات تاريخ : {{ $today }}</h4>
+               
             </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb pt-0 pr-0 float-left float-sm-right ">
-                    <li class="breadcrumb-item"><a href="#"
-                            class="default-color">{{ trans('orders_trans.All_Orders') }}</a></li>
-                    <li class="breadcrumb-item active">{{ trans('orders_trans.Orders') }}</li>
-                </ol>
-            </div>
+ 
         </div>
     </div>
     <!-- breadcrumb -->
@@ -88,138 +69,92 @@
             <div class="card card-statistics h-100">
                 <div class="card-body">
 
-                    <table id="custom_table_1" class="custom_table_1">
-                        <thead>
-                            <tr>
-                                <th>{{ trans('orders_trans.Cart_Number') }}</th>
-                                <th>{{ trans('orders_trans.Id') }}</th>
-                                <th>{{ trans('orders_trans.Delivery_Time') }}</th>
-                                <th>{{ trans('orders_trans.Client_Name') }}</th>
-                                <th>{{ trans('orders_trans.Delivery_Address') }}</th>
-                                <th>{{ trans('orders_trans.Shipping') }}</th>
-                                <th>{{ trans('orders_trans.Price') }}</th>
-                                <th>{{ trans('orders_trans.Percent') }}</th>
 
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php
-                                $groupedOrders = $orders->groupBy('cart_id');
-                                $totalShipping = 0;
-                                $totalOrders = 0;
-                                $totalPercent = 0;
-                            @endphp
-                            @foreach ($groupedOrders as $cartId => $ordersGroup)
-                                @php
-                                    $totalShipping += $ordersGroup[0]->shipping;
-                                    $totalOrders += $ordersGroup->count();
-                                    $totalPercent += $ordersGroup[0]->percent;
-                                @endphp
-                                <tr>
-                                    <td rowspan="{{ $ordersGroup->count() }}">
-                                        {{-- {{ $cartId }} --}}
-                                        {{ $loop->iteration }}
-                                    </td>
+                    @php
+                    $groupedOrders = $orders->groupBy('cart_id');
+                    $totalShipping = 0;
+                    $totalOrders = 0;
+                    $totalPercent = 0;
+                    $x=0
+                @endphp
+                @foreach ($groupedOrders as $cartId => $ordersGroup)
+                   
+                <table id="custom_table_2" class="cutom_table_2"  >
 
-                                    <td>{{ $ordersGroup[0]->id }}</td>
+    <tr>
+        <td>كود</td>
+        <td> {{ $loop->iteration }}</td>
+    </tr>
+    <tr>
+        <td>التوقيت</td>
+        <td> {{ \Carbon\Carbon::parse($ordersGroup[0]->orderDelivery->order_delivery_time)->format('h:i A') }}</td>
+    </tr>
+    <tr>
+        <td>العميل</td>
+        <td>{{ $ordersGroup[0]->user->first_name }}
+        <br/>
+        {{ $ordersGroup[0]->billingAddress->neighborhood_id }}
 
-                                    <td rowspan="{{ $ordersGroup->count() }}">
-                                        {{ \Carbon\Carbon::parse($ordersGroup[0]->orderDelivery->order_delivery_time)->format('h:i A') }}
+        </td>
+    </tr>
+    <tr>
+        <td>الشحن</td>
+        <td>{{ Currency::format($ordersGroup[0]->shipping) }}</td>
+    </tr>
+    <tr>
+        <td>النسبة</td>
+        <td>
+            @php
+                $order_percent =0;
+            @endphp
+        @foreach($ordersGroup as $order) 
+@php
+    $order_percent +=$order->percent;
+@endphp 
+        @endforeach
+        {{ Currency::format($order_percent) }}
+       
+         </td>
+    </tr>
+    <tr>
+        <td>المندوب</td>
+        <td> {{ $ordersGroup[0]->orderDelivery->delivery->name }}</td>
+    </tr>
+   
+</table>
+<br/>
+@php
+$x =$x+1;
+$totalShipping += $ordersGroup[0]->shipping;
 
-                                    </td>
+@endphp
 
-                                    <td rowspan="{{ $ordersGroup->count() }}">
-                                        {{ $ordersGroup[0]->user->first_name }}
-                                    </td>
+@foreach($ordersGroup as $order) 
+@php
+$totalPercent +=$order->percent;
+@endphp 
+@endforeach
 
-                                    <td rowspan="{{ $ordersGroup->count() }}">
-                                        {{ $ordersGroup[0]->orderDelivery->order_location }}</td>
-
-
-                                    <td rowspan="{{ $ordersGroup->count() }}">
-                                        {{ Currency::format($ordersGroup[0]->shipping) }}</td>
-                                    {{-- <td>{{ $deliveryOrder->order->number }}</td> --}}
-
-                                    <td>
-                                        @php
-                                            $totalPrice = 0;
-                                        @endphp
-
-                                        @foreach ($ordersGroup[0]->products as $product)
-                                            @php
-                                                $totalPrice += $product->price;
-                                            @endphp
-                                        @endforeach
-
-                                        {{ Currency::format($totalPrice) }}
-                                    </td>
-
-                                    <td rowspan="{{ $ordersGroup->count() }}">{{ $ordersGroup[0]->percent }}</td>
-
-
-
-                                </tr>
-
-                                @foreach ($ordersGroup->skip(1) as $additionalOrder)
-                                    <tr>
-                                        {{-- <td rowspan="{{ $ordersGroup->count() }}">{{ $cartId }}</td> --}}
-
-                                        <td>{{ $additionalOrder->id }}</td>
-
-                                        {{-- <td>{{ $additionalOrder->orderDelivery->order_delivery_time }}</td> --}}
-
-                                        {{-- <td>
-                                            {{ $additionalOrder->user->first_name }}
-                                        </td> --}}
-
-                                        {{-- <td>{{ $additionalOrder->orderDelivery->order_location }}</td> --}}
+@endforeach
 
 
-                                        {{-- <td>{{ $additionalOrder->shipping }}</td> --}}
-
-                                        <td>
-                                            @php
-                                                $totalPrice = 0;
-                                            @endphp
-
-                                            @foreach ($additionalOrder->products as $product)
-                                                @php
-                                                    $totalPrice += $product->price;
-                                                @endphp
-                                            @endforeach
-
-                                            {{ Currency::format($totalPrice) }}
-                                        </td>
-
-                                        {{-- <td>{{ $additionalOrder->percent }}</td> --}}
-
-
-
-                                    </tr>
-                                @endforeach
-                            @endforeach
-                            <tr>
-                                <td>أجمالى الشحن</td>
-                                <td colspan="7">
-                                    {{ Currency::format($totalShipping) }}
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>عدد الطلبات</td>
-                                <td colspan="7">
-                                    {{ $totalOrders }}
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>النسية</td>
-                                <td colspan="7">
-                                    {{ $totalPercent }}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+<table id="custom_table_1" class="custom_table_1">
+                  
+    <tbody>
+        <tr>
+            <td>عدد الطلبات</td>
+            <td colspan="8">{{ $x }} </td>
+        </tr>
+        <tr>
+            <td width="30%">أجمالى الشحن</td>
+            <td colspan="8">  {{ Currency::format($totalShipping) }}</td>
+        </tr>
+        <tr>
+            <td>النسبه</td>
+            <td colspan="8">{{ Currency::format($totalPercent) }}</td>
+        </tr>
+    </tbody>
+</table>
 
 
                     {{-- {{ $orders->links() }} --}}

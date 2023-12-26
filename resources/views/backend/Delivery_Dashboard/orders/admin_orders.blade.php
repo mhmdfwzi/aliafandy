@@ -4,59 +4,43 @@
     {{ trans('orders_trans.Orders') }}
 @endsection
 @push('style')
-    <style>
-        /* Default styles for the table */
-        .custom_table_1 {
+<style>
+    /* Default styles for the table */
+
+
+    .modal2 {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 1060;
+        display: none;
+        overflow: hidden;
+        outline: 0;
+    }
+
+    .custom_table_1 th,
+        .custom_table_1 td {
+            border: 1px solid #ddd;
+            padding: 1px;
+            text-align: center;
+        }
+    .cutom_table_2 {
+            display: table;
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
         }
 
-        .custom_table_1 th,
-        .custom_table_1 td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
+        .cutom_table_2 th,
+        .cutom_table_2 td { 
+            padding: 2px;
+            text-align: right;
+                background-color: #f8f8f8;
+                border: 1px solid #e3e2e2;
         }
-
-        .cutom_table_2 {
-            display: none;
-        }
-
-        .modal2 {
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            z-index: 1060;
-            display: none;
-            overflow: hidden;
-            outline: 0;
-        }
-
-        /* Responsive styles - hide columns on small screens */
-        @media screen and (max-width: 600px) {
-            .custom_table_1 {
-                display: none
-            }
-
-
-            .cutom_table_2 {
-                display: table;
-                width: 100%;
-                border-collapse: collapse;
-                margin-bottom: 20px;
-            }
-
-            .cutom_table_2 th,
-            .cutom_table_2 td {
-                border: 1px solid #ddd;
-                padding: 8px;
-                text-align: center;
-            }
-        }
-    </style>
+</style>
 @endpush
 @section('page-header')
     <!-- breadcrumb -->
@@ -92,7 +76,7 @@
                 @endphp
 
                 @foreach ($groupedOrders as $cartId => $ordersGroup)
-                    <table  width='100%' style="direction:rtl;background-color: #ddd" border='1' >
+                <table id="custom_table_2" class="cutom_table_2"  >
                         <tr>
                             <td>كود</td>
                             <td>{{ $cartId }}</td>
@@ -169,7 +153,7 @@
                             @endphp 
                                 @can('assignDelivery', App\Models\Delivery::class)
                                     @if ($order_delivery)
-                                        <div>{{ $delivery->name }} تم أرسال الطلب لمندوب الشحن</div>
+                                        <div>{{ $delivery->name }}  المندوب </div>
                                     @else
                                         <button type="button" class="button x-small" data-toggle="modal"
                                             data-target="#assign_delivery"

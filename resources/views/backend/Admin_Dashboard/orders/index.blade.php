@@ -41,7 +41,7 @@
                 @endphp
 
                 @foreach ($groupedOrders as $cartId => $ordersGroup)
-                    <table  width='100%' style="direction:rtl">
+                <table  width='100%' style="direction:rtl;background-color: #f3f3f3" border='1' >
                         <tr>
                             <td>كود</td>
                             <td>{{ $cartId }}</td>

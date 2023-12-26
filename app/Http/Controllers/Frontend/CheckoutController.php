@@ -129,7 +129,6 @@ class CheckoutController extends Controller
                 $order->total = $total;
                 $order->shipping = $request->changed_shipping_fees ? $request->changed_shipping_fees : $request->shipping_fees;
                 $order->coupon_id = $coupon ? $coupon->id : null;
-                $order->percent = ($store->percent * $total) / 100 ;
                 foreach ($cart_items as $item) {
 
 
@@ -147,6 +146,7 @@ class CheckoutController extends Controller
                     }
 
                     $order->store_order_total += $price;
+                    $order->percent = ($store->percent * $price) / 100 ;
                     $order->save();
 
                     // dd($request->all(), $items, $order);
