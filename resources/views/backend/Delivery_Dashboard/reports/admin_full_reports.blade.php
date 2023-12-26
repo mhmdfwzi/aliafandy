@@ -19,10 +19,7 @@
             text-align: center;
         }
 
-        .cutom_table_2 {
-            display: none;
-        }
-
+      
         .modal2 {
             position: fixed;
             top: 0;
@@ -37,9 +34,7 @@
 
         /* Responsive styles - hide columns on small screens */
         @media screen and (max-width: 600px) {
-            .custom_table_1 {
-                display: none
-            }
+            
 
 
             .cutom_table_2 {
@@ -101,12 +96,7 @@
                                 <th>{{ trans('orders_trans.Cart_Number') }}</th>
                                 {{-- <th>{{ trans('orders_trans.Id') }}</th> --}}
                                 {{-- <th>{{ trans('orders_trans.Delivery_Time') }}</th> --}}
-                                <th>{{ trans('orders_trans.Delivery') }}</th>
-                                <th>{{ trans('orders_trans.Id') }}</th>
-
-                                {{-- <th>{{ trans('orders_trans.Delivery_Address') }}</th> --}}
-
-                                <th>{{ trans('orders_trans.Price') }}</th>
+                                <th>{{ trans('orders_trans.Delivery') }}</th> 
                                 <th>{{ trans('orders_trans.Shipping') }}</th>
                                 <th>{{ trans('orders_trans.Percent') }}</th>
 
@@ -130,70 +120,49 @@
                                 @endphp
 
                                 <tr>
-                                    <td rowspan="{{ $deliveryOrders->count() }}">
+                                    <td  >
                                         {{ $loop->iteration }}
                                     </td>
 
-                                    <td rowspan="{{ $deliveryOrders->count() }}">
+                                    <td  >
                                         {{ $deliveryOrders[0]->delivery->name }}
                                     </td>
 
-                                    <td>
-                                        {{ $deliveryOrders[0]->order->id }}
-                                    </td>
+                                     
+                            <td>
+                                {{ $deliveryOrders->count() }}
+                                @php
+                                $delivry_shipping=0;
+                                $x=0;
+                            @endphp
+                            @foreach ($deliveryOrders as $additionalOrder)
+                            @php
+                                 $delivry_shipping=  $additionalOrder->order->shipping;
+                                 $x= $x+1;
+                            @endphp  
+                            {{ $delivry_shipping}}  
+                            @endforeach
+                            @php
+                             
+                                $delivry_shipping=$delivry_shipping/$x;
+                            @endphp
 
+                            
+                                     
+                            </td>
 
-                                    <td>
-                                        @php
-                                            $totalPrice = 0;
-                                        @endphp
-
-                                        @foreach ($deliveryOrders[0]->order->products as $product)
-                                            @php
-                                                $totalPrice += $product->price;
-                                            @endphp
-                                        @endforeach
-
-                                        {{ Currency::format($totalPrice) }}
-                                    </td>
-
-                                    <td>
-                                        {{ Currency::format($deliveryOrders[0]->order->shipping) }}
-                                    </td>
-
-                                    <td>
-                                        {{ $deliveryOrders[0]->order->percent }}
-                                    </td>
-
-
-                                </tr>
-
-                                @foreach ($deliveryOrders->skip(1) as $additionalOrder)
-                                    <tr>
-                                        <td>{{ $additionalOrder->order->id }}</td>
-
-
-                                        <td>
-                                            @php
-                                                $totalPrice = 0;
-                                            @endphp
-
-                                            @foreach ($additionalOrder->order->products as $product)
-                                                @php
-                                                    $totalPrice += $product->price;
-                                                @endphp
-                                            @endforeach
-
-                                            {{ Currency::format($totalPrice) }}
-                                        </td>
-                                        <td>
-                                            {{ Currency::format($additionalOrder->order->shipping) }}
-                                        </td>
-                                        <td>
-                                            {{ Currency::format($additionalOrder->order->percent) }}
-                                        </td>
-                                    </tr>
+                            <td>
+                                @php
+                                    $delivry_percent=0;
+                                @endphp
+                                @foreach ($deliveryOrders as $additionalOrder)
+                                @php
+                                     $delivry_percent+=  $additionalOrder->order->percent
+                                @endphp     
                                 @endforeach
+                                {{ Currency::format($delivry_percent) }}
+                            </td>
+                    
                             @endforeach
 
 

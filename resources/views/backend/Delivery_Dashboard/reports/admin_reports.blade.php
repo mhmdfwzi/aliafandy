@@ -80,28 +80,24 @@
                 <table id="custom_table_2" class="cutom_table_2"  >
 
     <tr>
-        <td>كود</td>
-        <td> {{ $loop->iteration }}</td>
-    </tr>
-    <tr>
-        <td>التوقيت</td>
-        <td> {{ \Carbon\Carbon::parse($ordersGroup[0]->orderDelivery->order_delivery_time)->format('h:i A') }}</td>
+        <td>كود: {{ $loop->iteration }}</td>
+      
+        <td> 
+            توقيت التوصيل: 
+            {{ \Carbon\Carbon::parse($ordersGroup[0]->orderDelivery->order_delivery_time)->format('h:i A') }}</td>
     </tr>
     <tr>
         <td>العميل</td>
-        <td>{{ $ordersGroup[0]->user->first_name }}
-        <br/>
+        <td>{{ $ordersGroup[0]->user->first_name }}-
         {{ $ordersGroup[0]->billingAddress->neighborhood_id }}
 
         </td>
     </tr>
     <tr>
-        <td>الشحن</td>
-        <td>{{ Currency::format($ordersGroup[0]->shipping) }}</td>
-    </tr>
-    <tr>
-        <td>النسبة</td>
+        <td>الشحن: {{ Currency::format($ordersGroup[0]->shipping) }}</td>
+    
         <td>
+            النسبة:
             @php
                 $order_percent =0;
             @endphp
