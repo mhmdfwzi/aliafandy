@@ -15,7 +15,7 @@
                 display: block;
                 background-color: inherit;
                 color: black;
-                padding: 22px 16px;
+                padding: 10px 16px;
                 width: 100%;
                 border: none;
                 outline: none;
@@ -40,7 +40,7 @@
                 float: left;
                 /* padding: 0px 12px; */
                 border: 1px solid #ccc;
-                width: 70%;
+                width: 100%;
                 border-left: none;
                 /* height: 300px; */
             }
@@ -121,7 +121,7 @@
                                 {{ session('error') }}
                             </div>
                         @endif
-                        <div class="col-lg-9 col-md-9 offset-md-1 col-9">
+                        <div class="col-lg-12 col-md-12 offset-md-1 col-12">
                             <div class="register-form">
 
                                 <div class="title">

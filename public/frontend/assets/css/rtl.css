@@ -3663,7 +3663,7 @@ text-align: right;
 
 @media only screen and (max-width: 600px) {
 
-
+ 
   .single-product {
     border: 1px solid #eee;
     border-radius: 4px;
@@ -3697,6 +3697,7 @@ text-align: right;
     text-align: center;
     width: 100px;  
     float: left;
+    min-height: 120px;
 
   }
 

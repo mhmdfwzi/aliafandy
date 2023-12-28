@@ -158,7 +158,8 @@
                                         <button type="button" class="button x-small" data-toggle="modal"
                                             data-target="#assign_delivery"
                                             data-cart-id="{{ $ordersGroup[0]->cart_id }}"
-                                            data-order-id="{{ $ordersGroup[0]->id }}">
+                                            data-order-id="{{ $ordersGroup[0]->id }}"
+                                            data-shipping="{{ $ordersGroup[0]->shipping}}">
                                             {{ trans('orders_trans.Assign_Delivery') }}
                                         </button>
                                     @endif
@@ -267,6 +268,8 @@
                                             <div class="col-md-12">
                                                 <input name="order_id" id="order_id" hidden />
                                                 <input name="cart_id" id="cart_id" hidden />
+                                                <input name="shipping" id="shipping"  hidden/>
+                                                
                                             </div>
 
                                         </div>
@@ -327,6 +330,10 @@
             var cartId = button.data(
                 'cart-id'); // Extract the order ID from the button data attribute
             $('#cart_id').val(cartId); // Set the value of the hidden input field with the order ID
+           
+            var shipping = button.data(
+                'shipping'); // Extract the order ID from the button data attribute
+            $('#shipping').val(shipping); // Set the value of the hidden input field with the order ID
 
         });
         $(document).ready(function() {

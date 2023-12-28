@@ -38,6 +38,8 @@ class OrdersController extends Controller
             $data['order_id'] = $order->id;
             $data['cart_id'] = $request->cart_id;
             $data['delivery_id'] = $request->delivery_id;
+            $data['shipping'] = $request->shipping;
+            //dd($data);
             OrderDelivery::create($data);
 
             event(new OrderToDelivery($order));
@@ -75,7 +77,7 @@ class OrdersController extends Controller
         $order_delivery = OrderDelivery::where('delivery_id', Auth::user('delivery')->id)
         // ->where('created_at', now()->today())
         ->pluck('order_id');
-        $orders = Order::whereIn('id', $order_delivery)->where('status', '<>', 'completed')->get();
+        $orders = Order::whereIn('id', $order_delivery)->where('status', '<>', 'completed')->latest()->get();
         return view('backend.Delivery_Dashboard.orders.notCompletedOrders', compact('orders'));
     }
 

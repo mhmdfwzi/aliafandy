@@ -213,7 +213,7 @@
 
                                         <div class="row show_products">
                                             @foreach ($products as $product)
-                                                <div class="col-lg-4 col-md-6 col-12">
+                                                <div class="col-lg-4 col-md-2 col-12">
                                                     <!-- Start Single Product -->
                                                     <div class="single-product">
                                                         @if ($product->sale_percent)
