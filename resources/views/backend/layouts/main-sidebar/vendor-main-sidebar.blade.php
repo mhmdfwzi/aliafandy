@@ -37,66 +37,13 @@
                             <li> 
                                 <a href="{{ Route('vendor.products.edit_products_price') }}">تعديل الاسعار</a>
                         </li>
-
+                        <li> <a href="{{ Route('vendor.attribute_values.create') }}">{{ trans('sidebar_trans.Add_Attribute_Value') }}
+                        </a> </li>
                         </ul>
                     </li>
 
-                    <!-- menu  Attributes-->
-                    <li>
-                        <a href="javascript:void(0);" data-toggle="collapse" data-target="#attributes-menu">
-                            <div class="pull-left"><i class="fa-brands fa-product-hunt fa-fade"></i><span
-                                    class="right-nav-text">{{ trans('sidebar_trans.Attributes') }} </span>
-                            </div>
-                            <div class="pull-right"><i class="ti-plus"></i></div>
-                            <div class="clearfix"></div>
-                        </a>
-                        <ul id="attributes-menu" class="collapse">
-                            <li> <a href="{{ Route('vendor.attributes.create') }}">{{ trans('sidebar_trans.Add_Attribute') }}
-                                </a> </li>
-                            <li> <a
-                                    href="{{ Route('vendor.attributes.index') }}">{{ trans('sidebar_trans.All_Attributes') }}</a>
-                            </li>
-
-                        </ul>
-                    </li>
-
-                    <!-- menu  Attributes Values-->
-                    <li>
-                        <a href="javascript:void(0);" data-toggle="collapse" data-target="#attribute_values-menu">
-                            <div class="pull-left"><i class="fa-brands fa-product-hunt fa-fade"></i><span
-                                    class="right-nav-text">{{ trans('sidebar_trans.Attribute_Values') }}
-                                </span></div>
-                            <div class="pull-right"><i class="ti-plus"></i></div>
-                            <div class="clearfix"></div>
-                        </a>
-                        <ul id="attribute_values-menu" class="collapse">
-                            <li> <a href="{{ Route('vendor.attribute_values.create') }}">{{ trans('sidebar_trans.Add_Attribute_Value') }}
-                                </a> </li>
-                            <li> <a
-                                    href="{{ Route('vendor.attribute_values.index') }}">{{ trans('sidebar_trans.All_Attribute_Values') }}</a>
-                            </li>
-
-                        </ul>
-                    </li>
-
-                    <!-- menu item product_variants-->
-                    <li>
-                        <a href="javascript:void(0);" data-toggle="collapse" data-target="#product_variants-menu">
-                            <div class="pull-left"><i class="fa-brands fa-product-hunt fa-fade"></i><span
-                                    class="right-nav-text">{{ trans('sidebar_trans.Product_Variants') }} </span></div>
-                            <div class="pull-right"><i class="ti-plus"></i></div>
-                            <div class="clearfix"></div>
-                        </a>
-                        <ul id="product_variants-menu" class="collapse">
-                            {{-- <li> <a href="{{ Route('vendor.product_variants.create') }}">{{ trans('sidebar_trans.Add_Product_Variant') }} --}}
-                            </a>
-                    </li>
-                    <li> <a
-                            href="{{ Route('vendor.product_variants.index') }}">{{ trans('sidebar_trans.All_Product_Variants') }}</a>
-                    </li>
-
-                </ul>
-                </li>
+                 
+               
 
 
 
