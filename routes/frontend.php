@@ -54,7 +54,7 @@ Route::group([
 
 
     Route::get('/all_products', [ProductsController::class, 'index'])->name('products.show_all');
-    Route::get('/products/{product:slug}', [ProductsController::class, 'show'])->name('products.show_product');
+    Route::get('/products/{id}/{slug}', [ProductsController::class, 'show'])->name('products.show_product');
 
 
     Route::get('get_sub_total', [CartController::class, 'get_sub_total'])->name('get_sub_total');

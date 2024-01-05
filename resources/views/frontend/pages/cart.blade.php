@@ -63,13 +63,13 @@
                         <div class="row align-items-center">
 
                             <div class="col-lg-1 col-md-1 col-12">
-                                <a href="{{ Route('products.show_product', $cart_item->product->slug) }}">
+                                <a href="{{ Route('products.show_product',[$cart_item->product->id, $cart_item->product->slug]) }}">
                                     <img src="{{ $cart_item->product->image_url }}" alt="#"></a>
                             </div>
 
                             <div class="col-lg-4 col-md-3 col-12">
                                 <h5 class="product-name"><a
-                                        href="{{ Route('products.show_product', $cart_item->product->slug) }}">
+                                        href="{{ Route('products.show_product', [$cart_item->product->id, $cart_item->product->slug]) }}">
                                         {{ $cart_item->product->name }}</a></h5>
                                 <p class="product-des">
                                     @if ($cart_item->product->measure == 'kg')

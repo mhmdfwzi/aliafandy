@@ -19,7 +19,8 @@ class ProductsController extends Controller
 
     // show product details
     
-    public function show(Product $product){
+    public function show($id , $slug){
+        $product = Product::where('id',$id)->where('slug',$slug)->first(); 
 
         $main_categories = Category::where('status','=','active')-> where('parent_id', '=', null)->get();
         $sup_categories = Category::where('status','=','active')-> where('parent_id','!=','null')->get();

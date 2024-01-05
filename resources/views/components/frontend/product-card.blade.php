@@ -6,7 +6,7 @@
     <div class="product-image">
                                                     
                                                        
-        <a href="{{ Route('products.show_product', $product->slug) }}">
+        <a href="{{ Route('products.show_product', [$product->id, $product->slug])  }}">
 			<img src="{{ $product->image_url }}"  alt="#">
 </a>
  
@@ -16,7 +16,7 @@
 
     <div class="product-info">
 		        <h4 class="title">
-            <a href="{{ Route('products.show_product', $product->slug) }}">{{ $product->name }} </a>
+            <a href="{{ Route('products.show_product',  [$product->id, $product->slug])  }}">{{ $product->name }} </a>
  </h4>
         <span class="category">     
             <a href="{{ route('shop_grid.index', ['categoryId' => $product->category->id]) }}">

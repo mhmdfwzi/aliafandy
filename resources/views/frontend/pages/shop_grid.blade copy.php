@@ -216,14 +216,14 @@
                                                 <div class="col-lg-4 col-md-2 col-12">
                                                     <!-- Start Single Product -->
                                                     <div class="single-product">
-                                                        @if ($product->sale_percent > $product->price)
+                                                        @if ($product->sale_percent)
                                                             <span class="sale-tag">-
                                                                 {{ $product->sale_percent }}%</span>
                                                         @endif
                                                         <div class="product-image">
 
                                                             <a
-                                                                href="{{ Route('products.show_product',  [$product->id, $product->slug]) }}">
+                                                                href="{{ Route('products.show_product', [$product->id, $product->slug]) }}">
                                                                 <img src="{{ $product->image_url }}" alt="#">
                                                             </a>
 
@@ -231,7 +231,7 @@
                                                         <div class="product-info">
                                                             <h4 class="title">
                                                                 <a
-                                                                    href="{{ Route('products.show_product',  [$product->id, $product->slug]) }}">{{ $product->name }}</a>
+                                                                    href="{{ Route('products.show_product', [$product->id, $product->slug]) }}">{{ $product->name }}</a>
                                                             </h4>
                                                             <span class="category">
                                                                 <a
@@ -349,6 +349,7 @@
 
 
 
+
             $(document).ready(function() {
 
 
@@ -405,16 +406,14 @@
                                         '<div class="col-lg-4 col-md-6 col-12">' +
                                         '<!-- Start Single Product -->' +
                                         '<div class="single-product">';
-                                            if (product.sale_percent > product.price) {
+                                    if (product.sale_percent) {
                                         productHtml += '<span class="sale-tag">- ' + product
                                             .sale_percent +
                                             ' %</span>';
                                     }
                                     productHtml +=
                                         '<div class="product-image">' +
-                                        '<a href="' + getProductRoute(product.id ,product.slug) + '">' +
                                         '<img src="' + product.image_url + '" alt="#">' +
-                                        '</a>' +
                                         '</div>' +
                                         '<div class="product-info">' +
                                         '<h4 class="title">' +
@@ -451,9 +450,9 @@
                                 }
 
                                 function getProductRoute(id, slug) {
-                            return "{{ route('products.show_product', ['id' => ':id', 'slug' => ':slug']) }}"
-                                .replace(':id', id).replace(':slug', slug)
-                        }
+                                return "{{ route('products.show_product', ['id' => ':id', 'slug' => ':slug']) }}"
+                                    .replace(':id', id).replace(':slug', slug)
+                                }
 
                                 // Append new products to the existing grid
                                 $('.show_products').append(html);
@@ -513,23 +512,23 @@
                                     '<div class="col-lg-4 col-md-6 col-12">' +
                                     '<!-- Start Single Product -->' +
                                     '<div class="single-product">';
-                                        if (product.sale_percent > product.price) {
+                                if (product.sale_percent) {
                                     productHtml += '<span class="sale-tag">- ' + product
                                         .sale_percent +
                                         ' %</span>';
                                 }
                                 productHtml +=
-                                        '<div class="product-image">' +
-                                        '<a href="' + getProductRoute(product.id ,product.slug) + '">' +
-                                        '<img src="' + product.image_url + '" alt="#">' +
-                                        '</a>' +
-                                        '</div>' +
-                                        '<div class="product-info">' +
-                                        '<h4 class="title">' +
-                                        '<a href="' + getProductRoute(product.id ,product.slug) + '">' + product.name +
-                                        '</a>' +
-                                        '</h4>' +
-                                        '<span class="category">' +
+                                    '<div class="product-image">' +
+                                    '<a href="' + getProductRoute(product.id ,product.slug) + '">' +
+                                    '<img src="' + product.image_url + '" alt="#">' +
+                                    '</a>' +
+                                    '</div>' +
+                                    '<div class="product-info">' +
+                                    '<h4 class="title">' +
+                                    '<a href="' + getProductRoute(product.id ,product.slug) + '">' + product.name +
+                                    '</a>' +
+                                    '</h4>' +
+                                    '<span class="category">' +
                                     '<a href="{{ route('shop_grid.index', ['categoryId' => '']) }}">' +
                                     (product.category ? product.category.name : '') +
                                     '</a>' +
@@ -559,12 +558,10 @@
                                 html += productHtml;
                             }
 
-                            function getProductRoute(id, slug) {
-                            return "{{ route('products.show_product', ['id' => ':id', 'slug' => ':slug']) }}"
-                                .replace(':id', id).replace(':slug', slug)
-                        }
+                            
                             // Update the HTML with the new results
-                            $('.show_products').html(html); 
+                            $('.show_products').html(html);
+ 
                         },
                     });
                 }
@@ -603,16 +600,18 @@
                                         '<div class="col-lg-4 col-md-6 col-12">' +
                                         '<!-- Start Single Product -->' +
                                         '<div class="single-product">';
-                                    if (product.sale_percent > product.price) {
+                                    if (product.sale_percent) {
                                         productHtml += '<span class="sale-tag">- ' + product
                                             .sale_percent +
                                             ' %</span>';
                                     }
                                     productHtml +=
-                                        '<div class="product-image">' +
-                                        '<img src="' + product.image_url + '" alt="#">' +
-                                        '</div>' +
-                                        '<div class="product-info">' +
+                                    '<div class="product-image">' +
+                                    '<a href="' + getProductRoute(product.id ,product.slug) + '">' +
+                                    '<img src="' + product.image_url + '" alt="#">' +
+                                    '</a>' +
+                                    '</div>' +
+                                    '<div class="product-info">' +
                                         '<span class="category">{{ trans('front_home_trans.Category') }} :' +
                                         '<a href="{{ route('shop_grid.index', ['categoryId' => '']) }}">' +
                                         (product.category ? product.category.name : '') +
@@ -624,14 +623,14 @@
                                         '</a>' +
                                         '</span>' +
                                         '<h4 class="title">' +
-                                        '<a href="' + getProductRoute(product.id ,product.slug) + '">' + product.name +
+                                        '<a href="' + getProductRoute(product.slug) + '">' + product.name +
                                         '</a>' +
                                         '</h4>' +
 
                                         '<div class="price">' +
                                         '<span>' + product.formatted_price + '</span>';
 
-                                    if (product.formatted_compare_price > product.formatted_price) {
+                                    if (product.formatted_compare_price) {
                                         productHtml += '<span class="discount-price">' + product
                                             .formatted_compare_price +
                                             '</span>';
@@ -646,11 +645,7 @@
                                     html += productHtml;
                                 }
 
-                                function getProductRoute(id, slug) {
-                            return "{{ route('products.show_product', ['id' => ':id', 'slug' => ':slug']) }}"
-                                .replace(':id', id).replace(':slug', slug)
-                        }
-
+                                
                                 // Update the HTML with the new results
                                 $('.show_products').html(html);
 

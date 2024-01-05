@@ -216,14 +216,14 @@
                                                 <div class="col-lg-4 col-md-2 col-12">
                                                     <!-- Start Single Product -->
                                                     <div class="single-product">
-                                                        @if ($product->sale_percent > $product->price)
+                                                        @if ($product->sale_percent >$product->price )
                                                             <span class="sale-tag">-
                                                                 {{ $product->sale_percent }}%</span>
                                                         @endif
                                                         <div class="product-image">
 
                                                             <a
-                                                                href="{{ Route('products.show_product',  [$product->id, $product->slug]) }}">
+                                                                href="{{ Route('products.show_product', [$product->id, $product->slug]) }}">
                                                                 <img src="{{ $product->image_url }}" alt="#">
                                                             </a>
 
@@ -231,7 +231,7 @@
                                                         <div class="product-info">
                                                             <h4 class="title">
                                                                 <a
-                                                                    href="{{ Route('products.show_product',  [$product->id, $product->slug]) }}">{{ $product->name }}</a>
+                                                                    href="{{ Route('products.show_product', [$product->id, $product->slug]) }}">{{ $product->name }}</a>
                                                             </h4>
                                                             <span class="category">
                                                                 <a
@@ -305,107 +305,94 @@
 
 
 
-
     @push('scripts')
-        <script src="{{ asset('backend/assets/js/jquery-3.6.0.min.js') }}"></script>
-        <script>
-            const input_left = document.getElementById("input_left");
-            const input_right = document.getElementById("input_right");
-            const thumb_left = document.querySelector(".slider > .thumb.left");
-            const thumb_right = document.querySelector(".slider > .thumb.right");
-            const range = document.querySelector(".slider > .range");
+    <script src="{{ asset('backend/assets/js/jquery-3.6.0.min.js') }}"></script>
+    <script>
+        const input_left = document.getElementById("input_left");
+        const input_right = document.getElementById("input_right");
+        const thumb_left = document.querySelector(".slider > .thumb.left");
+        const thumb_right = document.querySelector(".slider > .thumb.right");
+        const range = document.querySelector(".slider > .range");
 
-            const set_left_value = () => {
-                const _this = input_left;
-                const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
+        const set_left_value = () => {
+            const _this = input_left;
+            const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
 
-                _this.value = Math.min(parseInt(_this.value), parseInt(input_right.value) - 1);
+            _this.value = Math.min(parseInt(_this.value), parseInt(input_right.value) - 1);
 
-                const percent = ((_this.value - min) / (max - min)) * 100;
-                thumb_left.style.left = percent + "%";
-                range.style.left = percent + "%";
-            };
-            const set_right_value = () => {
-                const _this = input_right;
-                const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
+            const percent = ((_this.value - min) / (max - min)) * 100;
+            thumb_left.style.left = percent + "%";
+            range.style.left = percent + "%";
+        };
+        const set_right_value = () => {
+            const _this = input_right;
+            const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
 
-                _this.value = Math.max(parseInt(_this.value), parseInt(input_left.value) + 1);
+            _this.value = Math.max(parseInt(_this.value), parseInt(input_left.value) + 1);
 
-                const percent = ((_this.value - min) / (max - min)) * 100;
-                thumb_right.style.right = 100 - percent + "%";
-                range.style.right = 100 - percent + "%";
-            };
+            const percent = ((_this.value - min) / (max - min)) * 100;
+            thumb_right.style.right = 100 - percent + "%";
+            range.style.right = 100 - percent + "%";
+        };
 
-            input_left.addEventListener("input", set_left_value);
-            input_right.addEventListener("input", set_right_value);
+        input_left.addEventListener("input", set_left_value);
+        input_right.addEventListener("input", set_right_value);
 
-            function left_slider(value) {
-                document.getElementById('left_value').innerHTML = value;
-            }
+        function left_slider(value) {
+            document.getElementById('left_value').innerHTML = value;
+        }
 
-            function right_slider(value) {
-                document.getElementById('right_value').innerHTML = value;
-            }
+        function right_slider(value) {
+            document.getElementById('right_value').innerHTML = value;
+        }
 
+        $(document).ready(function() {
 
+        
 
-            $(document).ready(function() {
+            // apply filters function
+            function applyFilters() {
+                var category = $('.category:checked').map(function() {
+                    return $(this).val();
+                }).get();
+                var brand = $('.brand:checked').map(function() {
+                    return $(this).val();
+                }).get();
 
+                var store = $('.store:checked').map(function() {
+                    return $(this).val();
+                }).get();
+                var minPrice = $('#left_value').text();
+                var maxPrice = $('#right_value').text();
+                var search = $('#search').val();
+                var sort = $('#sort').val();
 
+                $.ajax({
+                    url: "{{ route('all_filters') }}",
+                    type: "GET",
+                    data: {
+                        category: category,
+                        brand: brand,
+                        store: store,
+                        min_price: minPrice,
+                        max_price: maxPrice,
+                        search: search,
+                        sort: sort
+                    },
+                    success: function(response) {
 
-                function seeMore() {
-                    // See More Button Click Event
-                    $('#seeMoreButton').on('click', function() {
-                        // Update the page number or any other parameters as needed
-                        var nextPage = parseInt($(this).data('page')) + 1;
-                        console.log(nextPage);
-
-                        var category = $('.category:checked').map(function() {
-                            return $(this).val();
-                        }).get();
-                        var brand = $('.brand:checked').map(function() {
-                            return $(this).val();
-                        }).get();
-
-                        var store = $('.store:checked').map(function() {
-                            return $(this).val();
-                        }).get();
-                        var minPrice = $('#left_value').text();
-                        var maxPrice = $('#right_value').text();
-                        var search = $('#search').val();
-                        var sort = $('#sort').val();
-
-                        // Make an AJAX request to get more products
-                        $.ajax({
-                            url: "{{ route('all_filters') }}?page=" + nextPage,
-                            type: "GET",
-                            data: {
-                                category: category,
-                                brand: brand,
-                                store: store,
-                                min_price: minPrice,
-                                max_price: maxPrice,
-                                search: search,
-                                sort: sort
-                            },
-                            // Include other necessary parameters for filtering
-                            // ...
-                            success: function(response) {
-                                var product_length = response.products.data.length;
-                                var products = response.products.data;
-                                var html = '';
-                                console.log(products);
-
-                                // Similar to your existing loop to create product HTML
-                                // ...
-                                for (var i = 0; i < product_length; i++) {
+                        var product_length = response.products.data.length;
+                        var products = response.products.data;
+                        var html = ''; // Variable to store the updated HTML
+                      
+                        for (var i = 0; i < product_length; i++) {
                                     var product = products[i];
                                     // Create HTML elements to display product information
                                     var productHtml =
                                         '<div class="col-lg-4 col-md-6 col-12">' +
                                         '<!-- Start Single Product -->' +
                                         '<div class="single-product">';
-                                            if (product.sale_percent > product.price) {
+                                            if (product.sale_percent>product.price) {
                                         productHtml += '<span class="sale-tag">- ' + product
                                             .sale_percent +
                                             ' %</span>';
@@ -450,61 +437,43 @@
                                     html += productHtml;
                                 }
 
-                                function getProductRoute(id, slug) {
+                        //ss
+
+                        function getProductRoute(id, slug) {
                             return "{{ route('products.show_product', ['id' => ':id', 'slug' => ':slug']) }}"
                                 .replace(':id', id).replace(':slug', slug)
                         }
-
-                                // Append new products to the existing grid
-                                $('.show_products').append(html);
-
-                                // Update the data-page attribute for the next request
-                                $('#seeMoreButton').data('page', nextPage);
-
-                                // Optionally, hide the "See More" button if there are no more pages
-                                if (nextPage >= response.products.last_page) {
-                                    $('#seeMoreButton').hide();
-                                }
-                            },
-                        });
-                    });
-                }
+                        // Update the HTML with the new results
+                        $('.show_products').html(html); 
+                        $('.pagination-list').html(response.pagination_links);
+                    },
+                });
+            }
 
 
-                // apply filters function
-                function applyFilters() {
-                    var category = $('.category:checked').map(function() {
-                        return $(this).val();
-                    }).get();
-                    var brand = $('.brand:checked').map(function() {
-                        return $(this).val();
-                    }).get();
+            function paginate() {
 
-                    var store = $('.store:checked').map(function() {
-                        return $(this).val();
-                    }).get();
-                    var minPrice = $('#left_value').text();
-                    var maxPrice = $('#right_value').text();
-                    var search = $('#search').val();
-                    var sort = $('#sort').val();
+                $(document).on('click', '.pagination a', function(event) {
+                    event.preventDefault();
+                    var url = $(this).attr('href');
+                    getProducts(url);
+                });
 
+                function getProducts(url) {
                     $.ajax({
-                        url: "{{ route('all_filters') }}",
-                        type: "GET",
-                        data: {
-                            category: category,
-                            brand: brand,
-                            store: store,
-                            min_price: minPrice,
-                            max_price: maxPrice,
-                            search: search,
-                            sort: sort
-                        },
+                        url: url,
+                        type: 'GET',
                         success: function(response) {
+                            console.log(response.products);
 
                             var product_length = response.products.data.length;
+
                             var products = response.products.data;
+
+                            // console.log(response.products);
+
                             var html = ''; // Variable to store the updated HTML
+
                             for (var i = 0; i < product_length; i++) {
                                 var product = products[i];
                                 // Create HTML elements to display product information
@@ -513,7 +482,7 @@
                                     '<div class="col-lg-4 col-md-6 col-12">' +
                                     '<!-- Start Single Product -->' +
                                     '<div class="single-product">';
-                                        if (product.sale_percent > product.price) {
+                                if (product.sale_percent>product.price) {
                                     productHtml += '<span class="sale-tag">- ' + product
                                         .sale_percent +
                                         ' %</span>';
@@ -525,11 +494,11 @@
                                         '</a>' +
                                         '</div>' +
                                         '<div class="product-info">' +
-                                        '<h4 class="title">' +
-                                        '<a href="' + getProductRoute(product.id ,product.slug) + '">' + product.name +
-                                        '</a>' +
-                                        '</h4>' +
-                                        '<span class="category">' +
+                                    '<h4 class="title">' +
+                                    '<a href="' + getProductRoute(product.id ,product.slug) + '">' + product.name +
+                                    '</a>' +
+                                    '</h4>' +
+                                    '<span class="category">' +
                                     '<a href="{{ route('shop_grid.index', ['categoryId' => '']) }}">' +
                                     (product.category ? product.category.name : '') +
                                     '</a>' +
@@ -559,170 +528,83 @@
                                 html += productHtml;
                             }
 
+
+
+
+
+
                             function getProductRoute(id, slug) {
-                            return "{{ route('products.show_product', ['id' => ':id', 'slug' => ':slug']) }}"
-                                .replace(':id', id).replace(':slug', slug)
-                        }
+                                return "{{ route('products.show_product', ['id' => ':id', 'slug' => ':slug']) }}"
+                                    .replace(':id', id).replace(':slug', slug)
+                            }
+
                             // Update the HTML with the new results
-                            $('.show_products').html(html); 
+                            $('.show_products').html(html);
+
+                            // Update pagination links
+                            $('.pagination-list').html(response.pagination_links);
+
                         },
                     });
                 }
+            }
 
 
-                function paginate() {
+            // Reset filters
+            $('.button').on('click', function(e) {
+                e.preventDefault();
+                $('input.category, input.brand , input.store').prop('checked', false);
+                $('#search').val('');
+                applyFilters();
+            });
 
-                    $(document).on('click', '.pagination a', function(event) {
-                        event.preventDefault();
-                        var url = $(this).attr('href');
-                        // var category = $('.category:checked').map(function() {return $(this).val(); }).get();
-                        getProducts(url);
-                    });
+            // Apply search filter
+            $('#search').on('keyup', function() {
+                applyFilters();
+            });
 
-                    function getProducts(url) {
-                        $.ajax({
-                            url: url,
-                            type: 'GET',
-                            success: function(response) {
-
-                                var product_length = response.products.data.length;
-
-                                var products = response.products.data;
-
-                                // console.log(response.products);
-
-                                var html = ''; // Variable to store the updated HTML
-
-                                for (var i = 0; i < product_length; i++) {
-                                    var product = products[i];
-
-
-                                    // Create HTML elements to display product information
-                                    // Create HTML elements to display product information
-                                    var productHtml =
-                                        '<div class="col-lg-4 col-md-6 col-12">' +
-                                        '<!-- Start Single Product -->' +
-                                        '<div class="single-product">';
-                                    if (product.sale_percent > product.price) {
-                                        productHtml += '<span class="sale-tag">- ' + product
-                                            .sale_percent +
-                                            ' %</span>';
-                                    }
-                                    productHtml +=
-                                        '<div class="product-image">' +
-                                        '<img src="' + product.image_url + '" alt="#">' +
-                                        '</div>' +
-                                        '<div class="product-info">' +
-                                        '<span class="category">{{ trans('front_home_trans.Category') }} :' +
-                                        '<a href="{{ route('shop_grid.index', ['categoryId' => '']) }}">' +
-                                        (product.category ? product.category.name : '') +
-                                        '</a>' +
-                                        '</span>' +
-                                        '<span class="category">{{ trans('front_home_trans.Store') }} :' +
-                                        '<a href="{{ route('shop_grid.indexStore', ['storeId' => '']) }}">' +
-                                        (product.store ? product.store.name : '') +
-                                        '</a>' +
-                                        '</span>' +
-                                        '<h4 class="title">' +
-                                        '<a href="' + getProductRoute(product.id ,product.slug) + '">' + product.name +
-                                        '</a>' +
-                                        '</h4>' +
-
-                                        '<div class="price">' +
-                                        '<span>' + product.formatted_price + '</span>';
-
-                                    if (product.formatted_compare_price > product.formatted_price) {
-                                        productHtml += '<span class="discount-price">' + product
-                                            .formatted_compare_price +
-                                            '</span>';
-                                    }
-
-                                    productHtml += '</div>' +
-                                        '</div>' +
-                                        '</div>' +
-                                        '</div>' +
-                                        '</div>';
-
-                                    html += productHtml;
-                                }
-
-                                function getProductRoute(id, slug) {
-                            return "{{ route('products.show_product', ['id' => ':id', 'slug' => ':slug']) }}"
-                                .replace(':id', id).replace(':slug', slug)
-                        }
-
-                                // Update the HTML with the new results
-                                $('.show_products').html(html);
-
-                                // Update pagination links
-                                $('.pagination-list').html(response.pagination_links);
-
-                            },
-                        });
-                    }
-                }
-
-
-
-                // Reset filters
-                $('.button').on('click', function(e) {
-                    e.preventDefault();
-                    $('input.category, input.brand , input.store').prop('checked', false);
-                    $('#search').val('');
-                    applyFilters();
-                });
-
-                // Apply search filter
-                $('#search').on('keyup', function() {
-                    applyFilters();
-                });
-
-                // Apply category filter
-                $('input.category').on('change', function() {
-                    applyFilters();
-                    // seeMore();
-
-                    // paginate();
-                });
-
-                // Apply store filter
-                $('input.store').on('change', function() {
-                    applyFilters();
-                    // seeMore();
-
-                    // paginate();
-                });
-
-                // Apply brand filter
-                $('input.brand').on('change', function() {
-                    applyFilters();
-                    // seeMore();
-
-                    // paginate();
-                });
-
-                // Apply sort filter
-                $('#sort').on('change', function() {
-                    applyFilters();
-                    // paginate();
-                });
-
-                // Apply price range filter
-                $('.range_slider').on('change', function() {
-                    applyFilters();
-                    // paginate();
-                });
-
-                // Initialize filters
-                // applyFilters();
-
-                // paginate();
-
-                seeMore();
-
-
+            // Apply category filter
+            $('input.category').on('change', function() {
+                applyFilters();
+                paginate();
 
             });
-        </script>
-    @endpush
+
+            // Apply store filter
+            $('input.store').on('change', function() {
+                applyFilters();
+                paginate();
+
+            });
+
+            // Apply brand filter
+            $('input.brand').on('change', function() {
+                applyFilters();
+
+            });
+
+            // Apply sort filter
+            $('#sort').on('change', function() {
+                applyFilters();
+
+            });
+
+            // Apply price range filter
+            $('.range_slider').on('change', function() {
+                applyFilters();
+            });
+
+            // Initialize filters
+            applyFilters();
+
+            paginate();
+
+            // seeMore();
+
+
+
+        });
+    </script>
+    <script src="{{ asset('frontend/assets/js/shop_grid.js') }}"></script>
+@endpush
 </x-front-layout>

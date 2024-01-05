@@ -181,9 +181,9 @@
              autoFill: true,
              select: function(event, ui) {
                  $("#search").val(ui.item.label); // Set the product name in the input field
-                 // Navigate to the product details page
-                 window.location.href = "{{ route('products.show_product', '') }}/" + ui.item.slug;
-                 // Prevent the default behavior of the autocomplete widget
+                 window.location.href =
+                            "{{ route('products.show_product', ['id' => ':id', 'slug' => ':slug']) }}"
+                            .replace(':id', ui.item.value).replace(':slug', ui.item.slug);
                  return false;
              },
          }).data("ui-autocomplete")._renderItem = function(ul, item) {

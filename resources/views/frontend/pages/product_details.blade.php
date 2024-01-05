@@ -6,7 +6,7 @@
                 <div class="row align-items-center">
                     <div class="col-lg-6 col-md-6 col-12">
                         <div class="breadcrumbs-content">
-                            <h1 class="page-title">{{ $product->name }}</h1>
+                           
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-12">
@@ -54,7 +54,7 @@
                     </div>
                     <div class="col-lg-6 col-md-12 col-12">
                         <div class="product-info">
-                             
+                            <h5 class="page-title" style="padding: 1rem 0 1rem 0">{{ $product->name }}</h5>
                             <p class="category" style="color:#000">
                                 <i class="lni lni-tag"></i> 
 								
@@ -72,7 +72,7 @@
 							<p>
 							{{ $product->short_description }}
 							</p>
-                            <h3 class="price">سعر المنتج  {{ Currency::format($product->price) }}
+                            <h3 class="price" style="color:#27b947; font-size:1.3rem; margin: 1rem 0 0 0">سعر المنتج : {{ Currency::format($product->price) }}
                                 @if ($product->compare_price > $product->price)
                                     <span class="text-danger">{{ Currency::format($product->compare_price) }}</span>
                                 @endif
@@ -270,7 +270,7 @@
                     <div class="brands-logo-carousel d-flex align-items-center justify-content-between">
 
                         @foreach ($products_limit as $product)
-                        <a href="{{ Route('products.show_product', $product->slug) }}">
+                        <a href="{{ Route('products.show_product',  [$product->id, $product->slug])  }}">
                         <div class="brand-logo" style="direction: rtl">
                             <img src="{{$product->image_url}}" alt="{{$product->name}}">
 							</br>

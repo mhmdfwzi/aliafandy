@@ -141,7 +141,7 @@
                             <span class="badge badge-rounded badge-warning p-2 mb-2">
                                 {{ trans('products_trans.Draft') }}
                             </span>
-                        @elseif($product->status == 'archvied')
+                        @elseif($product->status == 'inactive')
                             <span class="badge badge-rounded badge-danger p-2 mb-2">
                                 {{ trans('products_trans.Archvied') }}
                             </span>
@@ -152,15 +152,7 @@
                             class="btn btn-warning btn-sm">
                             <i class="fa fa-edit"></i>
                         </a>
-                        <form action="{{ Route('vendor.products.destroy', $product->id) }}" method="post"
-                            style="display:inline">
-                            @csrf
-                            @method('delete')
-
-                            <button type="submit" class="btn btn-danger btn-sm">
-                                <i class="fa fa-trash"></i>
-                            </button>
-                        </form>
+                         
                         <a href="" class="btn btn-primary btn-sm">
                             <i class="fa fa-eye"></i>
                         </a>
